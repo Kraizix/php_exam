@@ -13,6 +13,8 @@ if (is_post_request()) {
     $sql= "INSERT INTO users(username,pass,mail) VALUES ('$user','$hash','$email')";
     if ($conn->query($sql)=== TRUE) {
         echo "Inserted successfully";
+        header("Location: http://localhost/php_exam/login.php");
+        die();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }

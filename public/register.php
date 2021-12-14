@@ -2,10 +2,17 @@
 require __DIR__.'/../src/bootstrap.php';
 if (is_post_request()) {
     $conn = new mysqli("localhost", "root", "", "php_exam_db");
-    $user = $_POST['username'];
-    $password = $_POST['password'];
-    $password2 = $_POST['password2'];
-    $email = $_POST['email'];
+    $data =$_POST;
+    if (empty($data['username'])||
+        empty($data['password'])||
+        empty($data['password2'])||
+        empty($data['email'])) {
+        die('Please fill all required fields');
+    }
+    $user = $data['username'];
+    $password = $data['password'];
+    $password2 = $data['password2'];
+    $email = $data['email'];
     $options = [
         'cost' => 12,
     ];
@@ -40,7 +47,7 @@ if (is_post_request()) {
             <input type="password" name="password" id="password">
         </div>
         <div>
-            <label for="password2">Password Again:</label>
+            <label for="password2">Confirm Password:</label>
             <input type="password" name="password2" id="password2">
         </div>
         <button type="submit">Register</button>

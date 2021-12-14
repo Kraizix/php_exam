@@ -25,7 +25,7 @@ if (is_post_request()) {
 
 ?>
 
-<?php view('header', ['title' => 'Register']) ?>
+<?php view('header', ['title' => 'Login']) ?>
 <body>
     <form action="login.php" method="POST">
         <h1>Login Page</h1>

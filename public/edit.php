@@ -1,13 +1,28 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
+
+$dbName = "forum_php";
+
+$dsn = "mysql:host=localhost:3306;dbname=" . $dbName;
+$username = "root";
+$password = "";
+
+try{
+    $pdo = new PDO($dsn, $username, $password);
+} catch (PDOException $e){
+    echo "ERROR";
+    echo $e->getMessage();
+die();
+}
+
 ?>
 <!DOCTYPE html>
 <?php view('header', ['title' => 'New']) ?>
     <body>
         <?php
         if (isset($_SESSION['user'])){
-            $query = 'SELECT * FROM Articles WHERE id = ' ,$_SESSION["Post_id"];
-            $results = $pdo->prepare($query);
+            $query = "SELECT * FROM Articles WHERE id = " . $_SESSION["Post_id"];
+            $results = $mysqli->prepare($query);
             $results->execute();
             $post=$results->fetchAll();
             ?>
@@ -53,11 +68,11 @@ require __DIR__.'/../src/bootstrap.php';
                                 'author' => $_SESSION['user']
                             ];
 
-                            $query = $pdo->prepare($queryString);
+                            $query = $mysqli->prepare($queryString);
                             $query->execute($data);
 
                             header("Location:./home.php");
-                        }catch (PDOException $e){
+                        }catch (Exception $e){
                             $error=true;
                             ?>
                             <label>This  exist</label>

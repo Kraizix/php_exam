@@ -1,26 +1,49 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
-if (is_post_request()) {
-    $conn = new mysqli("localhost", "root", "", "php_exam_db");
+
+$dbName = "forum_php";
+
+$dsn = "mysql:host=localhost:3306;dbname=" . $dbName;
+$username = "root";
+$password = "";
+
+try{
+    $pdo = new PDO($dsn, $username, $password);
+} catch (PDOException $e){
+    echo "ERROR";
+    echo $e->getMessage();
+    die();
+}
+
+if (isset($_POST['username'])) {
+    echo "HERE";
     $user = $_POST['username'];
     $password = $_POST['password'];
-    $result = $conn->query("SELECT pass FROM users WHERE username='{$user}'");
-    $row = mysqli_fetch_row($result);
-    echo print_r($row);
-    $hash = $row[0];
-    if (password_verify($password,$hash)){
-        echo "Login successful!";
-        if(!isset($_SESSION)) 
-        { 
-            session_start(); 
-        } 
-        $_SESSION['user'] = $user;
-        header("Location: http://localhost/php_exam/index.php");
-        die();
-    } else {
-        echo "Login failed";
+    try{
+        $query = 'SELECT * FROM Users WHERE username="'.$user.'"';
+        $results = $pdo->prepare($query);
+        $results->execute();
+
+        $post=$results->fetch();
+
+        $hash = $post["pass"];
+        if (password_verify($password,$hash)){
+            echo "Login successful!";
+            if(!isset($_SESSION)) 
+            { 
+                session_start(); 
+            } 
+            $_SESSION['user'] = $user;
+            header("Location: index.php");
+            die();
+        } else {
+            echo "Login failed: wrong password";
+        }
+        
+    }catch (PDOException $e){
+        echo "No User with this name";
     }
-    $conn->close();
+    
 }
 
 ?>

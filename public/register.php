@@ -1,7 +1,21 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
-if (is_post_request()) {
-    $conn = new mysqli("localhost", "root", "", "php_exam_db");
+
+$dbName = "forum_php";
+
+$dsn = "mysql:host=localhost:3306;dbname=" . $dbName;
+$username = "root";
+$password = "";
+
+try{
+    $pdo = new PDO($dsn, $username, $password);
+} catch (PDOException $e){
+    echo "ERROR";
+    echo $e->getMessage();
+    die();
+}
+
+if (isset($_POST['username'])) {
     $data =$_POST;
     if (empty($data['username'])||
         empty($data['password'])||
@@ -16,23 +30,24 @@ if (is_post_request()) {
     $options = [
         'cost' => 12,
     ];
-    $hash = password_hash($password,PASSWORD_BCRYPT,$options);
-    $sql= "INSERT INTO users(username,pass,mail) VALUES ('$user','$hash','$email')";
-    if ($conn->query($sql)=== TRUE) {
-        echo "Inserted successfully";
-        header("Location: http://localhost/php_exam/login.php");
-        die();
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+    
+    try {
+        $hash = password_hash($password,PASSWORD_BCRYPT,$options);
+        $query= "INSERT INTO users(username,pass,mail) VALUES ('$user','$hash','$email')";
+        $results = $pdo->prepare($query);
+        $results->execute();
+    }catch (PDOException $e){
+        echo "Error: " . $query . "<br>" . $pdo->error;
     }
-    $conn->close();
+    echo "Inserted successfully";
+    header("Location:login.php");
 }
 
 ?>
 
 <?php view('header', ['title' => 'Register']) ?>
 <body>
-    <form action="register.php" method="POST">
+    <form method="POST">
         <h1>Register Page</h1>
         <div>
             <label for="username">Username:</label>

@@ -49,19 +49,16 @@ require __DIR__.'/../src/bootstrap.php';
                                 'content' => $content,
                                 //'category' => $category
                                 'date' => date("Y-m-d"),
-                                'userID' => $_SESSION['user']
+                                'userID' => $_SESSION['user'],
                                 'pinned' => (bool) $pin
                             ];
 
-                            $query = $pdo->prepare($queryString);
+                            $query = $mysqli->prepare($queryString);
                             $query->execute($data);
 
                             header("Location:./home.php");
-                        }catch (PDOException $e){
-                            $error=true;
-                            ?>
-                            <label>This  exist</label>
-                            <?php
+                        }catch (Exception $e) {
+                            
                         }
                     }else{
                         ?>

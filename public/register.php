@@ -38,7 +38,7 @@ if (isset($_POST['username'])) {
         echo "Error: " . $query . "<br>" . $pdo->error;
     }
     echo "Inserted successfully";
-    //header("Location:login.php");
+    header("Location:login.php");
 }
 
 ?>

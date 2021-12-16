@@ -24,9 +24,9 @@ if (isset($_POST['username'])) {
         $results = $pdo->prepare($query);
         $results->execute();
 
-        $post=$results->fetch();
+        $currentUser=$results->fetch();
 
-        $hash = $post["pass"];
+        $hash = $currentUser["pass"];
         if (password_verify($password,$hash)){
             echo "Login successful!";
             if(!isset($_SESSION)) 
@@ -34,6 +34,8 @@ if (isset($_POST['username'])) {
                 session_start(); 
             } 
             $_SESSION['user'] = $user;
+            $_SESSION['admin'] = $currentUser['admin'];
+            $_SESSION['id'] = $currentUser['id'];
             header("Location: index.php");
             die();
         } else {

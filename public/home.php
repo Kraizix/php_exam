@@ -1,5 +1,5 @@
 
-<?php view('header', ['title' => 'NEw']);
+<?php view('header', ['title' => 'New']);
 $dbName = "forum_php";
 
 $dsn = "mysql:host=localhost:3306;dbname=" . $dbName;

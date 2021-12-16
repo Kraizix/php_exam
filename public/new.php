@@ -1,5 +1,18 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
+$dbName = "forum_php";
+
+$dsn = "mysql:host=localhost:3306;dbname=" . $dbName;
+$username = "root";
+$password = "";
+
+try{
+    $pdo = new PDO($dsn, $username, $password);
+} catch (PDOException $e){
+    echo "ERROR";
+    echo $e->getMessage();
+    die();
+}
 ?>
 <!DOCTYPE html>
 <?php view('header', ['title' => 'New']) ?>
@@ -15,9 +28,16 @@ require __DIR__.'/../src/bootstrap.php';
                     <input type="text" name="content" id="content" placeholder="Tell us what you want ... ">
                 </div>
                 <div>
-                    <label for="category">Category:</label>
                     <!--Dropdown style VALENTIN -->
-                    <input type="text" name="category" id="category:">
+
+                    <label for="category">Category:</label>
+                    <select name="category" id="category">
+                        <option value="">--Please choose an category--</option>
+                        <option value="informatique">Informatique</option>
+                        <option value="new">New</option>
+                        <option value="anime">Animé</option>
+                        <option value="event">Evènement</option>
+                    </select>
                 </div>
                 <div>
                     <label for="pin">Pin</label>
@@ -29,42 +49,39 @@ require __DIR__.'/../src/bootstrap.php';
                 $error=false;
                 if (isset($_POST['title']) && isset($_POST['content'])) {
                     ?>
-                <?php
-                    session_start();
+                    <?php
                         $title = $_POST['title'];
                         $content = $_POST['content'];
-                        $pin= $_POST['pin'] ?? 0
-                    
-                    
+                        $pin= $_POST['pin'] ?? 0;
                     ?> 
                         <br>
                         
-                        <?php 
+                    <?php 
 
-                        try{
-                            $queryString = "INSERT INTO Articles (title, content, date, userID, pinned) VALUES (:title, :content, :date, :userID, :pinned)";
-                            
-                            $data = [
-                                'title' => $title,
-                                'content' => $content,
-                                //'category' => $category
-                                'date' => date("Y-m-d"),
-                                'userID' => $_SESSION['user'],
-                                'pinned' => (bool) $pin
-                            ];
+                    try{
+                        $date = date("Y-m-d");
+                        $userID = $_SESSION['id'];
+                        $pinned = (bool) $pin;
+                        $category = $_POST['category'];
+                        $queryString = "INSERT INTO Articles (title, content, category,date, userID, pinned) VALUES ('$title', '$content', '$category','$date', '$userID', '$pinned')";
+                        
+                        $query = $pdo->prepare($queryString);
+                        $query->execute();
 
-                            $query = $mysqli->prepare($queryString);
-                            $query->execute($data);
+                        $queryString = "SELECT id FROM Articles ORDER BY id DESC LIMIT 1";
+                        $query = $pdo->prepare($queryString);
+                        $query->execute();
+                        $idPost=$res->fetch();
 
-                            header("Location:./home.php");
-                        }catch (Exception $e) {
-                            
-                        }
-                    }else{
-                        ?>
-                        <label>Required Title and Content please</label>
-                        <?php 
-                    }?>
+                        header("Location:./details.php/?id=$idPost");
+                    }catch (Exception $e) {
+                        echo "Problem bro : ------> " . $e->getMessage();
+                    }
+                }else{
+                    ?>
+                    <label>Required Title and Content please</label>
+                    <?php 
+                }?>
         <?php
         }else{
             ?>

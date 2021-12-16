@@ -1,6 +1,6 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
-include '../Config/db.php';
+include '../config/db.php';
 
 if (isset($_POST['username'])) {
     $data =$_POST;
@@ -14,20 +14,31 @@ if (isset($_POST['username'])) {
     $password = $data['password'];
     $password2 = $data['password2'];
     $email = $data['email'];
+    $image = "../content/default/default.png";
+    $date = date("Y-m-d H:i:s");
     $options = [
         'cost' => 12,
     ];
     
     try {
         $hash = password_hash($password,PASSWORD_BCRYPT,$options);
-        $query= "INSERT INTO Users(username,pass,mail) VALUES ('$user','$hash','$email')";
+        $query= "INSERT INTO Users(username,pass,mail,joinDate,image) VALUES (:username, :pass, :mail, :joinDate, :image)";
+
+        $datas = [
+            "username" => $user,
+            "pass" => $hash,
+            "mail" => $email,
+            "joinDate" => $date,
+            "image" => $image
+        ];
+
         $results = $pdo->prepare($query);
-        $results->execute();
+        $results->execute($datas);
     }catch (PDOException $e){
         echo "Error: " . $query . "<br>" . $pdo->error;
     }
     echo "Inserted successfully";
-    header("Location:login.php");
+    //header("Location:login.php");
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-include '../Config/db.php';
+include '../config/db.php';
 
 if(!isset($_SESSION)) 
 { 

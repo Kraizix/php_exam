@@ -1,6 +1,6 @@
 
 <?php view('header', ['title' => 'New']);
-include '../Config/db.php';
+include '../config/db.php';
 
 $queryString="SELECT * FROM Articles";
 $results = $pdo->prepare($query);

@@ -1,6 +1,6 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
-include '../Config/db.php';
+include '../config/db.php';
 
 if (isset($_POST['username'])) {
     echo "HERE";

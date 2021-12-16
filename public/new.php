@@ -1,18 +1,6 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
-$dbName = "forum_php";
-
-$dsn = "mysql:host=localhost:3306;dbname=" . $dbName;
-$username = "root";
-$password = "";
-
-try{
-    $pdo = new PDO($dsn, $username, $password);
-} catch (PDOException $e){
-    echo "ERROR";
-    echo $e->getMessage();
-    die();
-}
+include '../Config/db.php';
 ?>
 <!DOCTYPE html>
 <?php view('header', ['title' => 'New']) ?>
@@ -71,7 +59,8 @@ try{
                         $queryString = "SELECT id FROM Articles ORDER BY id DESC LIMIT 1";
                         $query = $pdo->prepare($queryString);
                         $query->execute();
-                        $idPost=$res->fetch();
+                        $idPost=$query->fetch();
+                        $idPost=$idPost[0];
 
                         header("Location:./details.php/?id=$idPost");
                     }catch (Exception $e) {

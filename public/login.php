@@ -1,19 +1,6 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
-
-$dbName = "forum_php";
-
-$dsn = "mysql:host=localhost:3306;dbname=" . $dbName;
-$username = "root";
-$password = "";
-
-try{
-    $pdo = new PDO($dsn, $username, $password);
-} catch (PDOException $e){
-    echo "ERROR";
-    echo $e->getMessage();
-    die();
-}
+include '../Config/db.php';
 
 if (isset($_POST['username'])) {
     echo "HERE";

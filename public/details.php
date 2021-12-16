@@ -1,51 +1,64 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
-
-$dbName = "forum_php";
-
-$dsn = "mysql:host=localhost:3306;dbname=" . $dbName;
-$username = "root";
-$password = "";
-
-try{
-    $pdo = new PDO($dsn, $username, $password);
-} catch (PDOException $e){
-    echo "ERROR";
-    echo $e->getMessage();
-die();
-}
+include '../Config/db.php';
 
 ?>
 <!DOCTYPE html>
 <?php view('header', ['title' => 'Details']) ?>
     <body>
         <?php
+        
+        $idPost = $_GET['id'];
+
+        if (isset($_POST['sub'])){
+            switch ($_POST['sub']){ 
+                case 'like':
+                    echo "Like";
+                    break;
+                case 'favori':
+                    echo "Favori";
+                    break;
+                case 'delete':
+                    echo "Delete";
+                    break;
+                case 'edit':
+                    echo "Edit";
+                    header("Location:http://localhost:8080/edit.php/?id=$idPost");
+                    break;
+            }
+        }
+
         if (isset($_SESSION['user'])){
-            $idPost = $_GET['id'];
             $queryString = "SELECT * FROM Articles WHERE id = " . $idPost;
             $query = $pdo->prepare($queryString);
             $query->execute();
             $post=$query->fetch();
             ?>
 
-            <form action="" method="POST">
+            <form method="POST">
+                
                 <h1><?=$post['title']?></h1>
+                <?php
+                if (isset($_SESSION['id'])==$post['userID']){
+                ?>
+                    <button type="submit" name="sub" value="edit">Edit</button>
+                    <button type="submit" name="sub" value="delete">Delete</button>
+                <?php
+                }
+                ?>
                 <div>
                     <?=$post['content']?>
                 </div>
                 <div>
                     <?=$post['category']?>
                 </div>
-                <button type="submit" name="like">Like</button>
-                <button type="submit" name="favori">Favori</button>
+                
+                <button type="submit" name="sub" value="like">Like</button>
+                <button type="submit" name="sub" value="favori">Favori</button>
             </form>
-            <?php
-                $error=false;
-                if (isset($_POST['like']) || isset($_POST['favori'])) {
-                    echo "HEre";
-                }
+        <?php
         }else{
-            ?>
+        ?>
             <div>  
                 <h1 class="Message">You are not connected</h1>
                 <input  type="button" onclick="document.location='./register.php'" value="Register" class="lonelyBtn"/>  

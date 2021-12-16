@@ -1,95 +1,67 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
+include '../Config/db.php';
 
-$dbName = "forum_php";
+$idPost = $_GET['id'];
 
-$dsn = "mysql:host=localhost:3306;dbname=" . $dbName;
-$username = "root";
-$password = "";
+$queryString = "SELECT * FROM Articles WHERE id = " . $idPost;
+$query = $pdo->prepare($queryString);
+$query->execute();
+$post=$query->fetch();
 
-try{
-    $pdo = new PDO($dsn, $username, $password);
-} catch (PDOException $e){
-    echo "ERROR";
-    echo $e->getMessage();
-die();
+if (isset($_POST['sub'])){
+    switch ($_POST['sub']){
+        case 'send':
+            echo "SEND";
+            $queryString="UPDATE Articles SET title=:title, content=:content,";
+            break;
+        case 'cancel':
+            echo "Cancel";
+            break;
+    }
 }
 
 ?>
 <!DOCTYPE html>
-<?php view('header', ['title' => 'New']) ?>
+<?php view('header', ['title' => 'Edit']) ?>
     <body>
         <?php
-        if (isset($_SESSION['user'])){
-            $query = "SELECT * FROM Articles WHERE id = " . $_SESSION["Post_id"];
-            $results = $mysqli->prepare($query);
-            $results->execute();
-            $post=$results->fetchAll();
+        if (isset($_SESSION['id'])==$post['userID']){
             ?>
 
             <form method="POST">
-                <h1>Create Post</h1>
-                <div>
-                    <input type="text" name="title" id="title" placeholder="title ... ">
-                </div>
-                <div>
-                    <input type="text" name="content" id="content" placeholder="Tell us what you want ... ">
-                </div>
-                <div>
-                    <label for="category">Category:</label>
-                    <!--Dropdown style VALENTIN -->
-                    <input type="text" name="category" id="category:">
-                </div>
-                <button type="submit">Submit</button>
-            </form>
-            <?php
-                $error=false;
-                if (isset($_POST['title']) && isset($_POST['content'])) {
-                    ?>
+                
+                <h1><?=$post['title']?></h1>
                 <?php
-                    session_start();
-                        $title = $_POST['title'];
-                        $content = $_POST['content'];
-                    
-                    
-                    ?> 
-                        <br>
-                        
-                        <?php 
-
-                        try{
-
-                            //$queryString = "UPDATE Articles SET (title, description, date, author) VALUES (:title, :description, :date, :author)";
-                            
-                            $data = [
-                                'title' => $title,
-                                'description' => $content,
-                                'date' => date("Y-m-d"),
-                                'author' => $_SESSION['user']
-                            ];
-
-                            $query = $mysqli->prepare($queryString);
-                            $query->execute($data);
-
-                            header("Location:./home.php");
-                        }catch (Exception $e){
-                            $error=true;
-                            ?>
-                            <label>This  exist</label>
-                            <?php
-                        }
-                    }else{
-                        ?>
-                        <label>Required Title and Content please</label>
-                        <?php 
-                    }?>
+                if (isset($_SESSION['id'])==$post['userID']){
+                ?>
+                    <button type="submit" name="sub" value="delete">Delete</button>
+                <?php
+                }
+                ?>
+                <div>
+                    <textarea ><?=$post['content']?></textarea>
+                </div>
+                <div>
+                    <select name="category" id="category">
+                        <option value="">--<?=strtoupper($post['category'])?>--</option>
+                        <option value="informatique">Informatique</option>
+                        <option value="new">New</option>
+                        <option value="anime">Animé</option>
+                        <option value="event">Evènement</option>
+                    </select>
+                </div>
+                
+                <button type="submit" name="sub" value="send">SEND</button>
+                <button type="submit" name="sub" value="cancel">Cancel</button>
+            </form>
         <?php
         }else{
             ?>
             <div>  
-                <h1 class="Message">You are not connected</h1>
-                <input  type="button" onclick="document.location='./register.php'" value="Register" class="lonelyBtn"/>  
-                <input  type="button" onclick="document.location='./login.php'" value="Login" class="lonelyBtn"/>
+                <h1 class="Message">MDR t'es qui en fait ? T'as cru pouvoir modifier un truc qui n'est pas à toi?</h1>
+                <h1  class="Message">Allez la racaille ça dégage !!</h1>  
+                <input  type="button" onclick="document.location='./index.php'" value="cancel" class="lonelyBtn"/>
             </div>
             <?php 
         }

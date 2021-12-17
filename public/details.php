@@ -23,7 +23,7 @@ include '../config/db.php';
                     break;
                 case 'edit':
                     echo "Edit";
-                    header("Location:http://localhost:8080/edit.php/?id=$idPost");
+                    header("Location:http://localhost:8080/edit.php?id=$idPost");
                     break;
             }
         }
@@ -50,7 +50,12 @@ include '../config/db.php';
                     <?=$post['content']?>
                 </div>
                 <div>
-                    <?=$post['category']?>
+                    <?php
+                    $carArray = unserialize($post['category']);
+                    foreach($carArray as $category) {
+                        echo $category." ";
+                    }
+                    ?>
                 </div>
                 
                 <button type="submit" name="sub" value="like">Like</button>

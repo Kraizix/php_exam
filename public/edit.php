@@ -22,18 +22,18 @@ if (isset($_POST['sub'])){
             $queryString.=" WHERE id = " . $idPost;
             $query= $pdo->prepare($queryString);
             $query->execute();
-            header("Location:http://localhost:8080/details.php/?id=$idPost");
+            header("Location:http://localhost:8080/details.php?id=$idPost");
             break;
         case 'cancel':
-            header("Location:http://localhost:8080/details.php/?id=$idPost");
+            header("Location:http://localhost:8080/details.php?id=$idPost");
             break;
         case 'delete':
             echo "delete";
-            header("Location:http://localhost:8080/Method/delete.php/?id=$idPost");
+            header("Location:http://localhost:8080/Method/delete.php?id=$idPost");
             break;
         case 'back':
             echo "here";
-            header("Location:http://localhost:8080/details.php/?id=$idPost");
+            header("Location:http://localhost:8080/details.php?id=$idPost");
             break;
 
     }

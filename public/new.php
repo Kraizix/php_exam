@@ -47,10 +47,13 @@ include '../config/db.php';
                     <?php 
 
                     try{
+                        //serialize category array to insert in db
+                        $catArray = explode(',', $_POST['category']);
+                        $category = serialize($catArray);
+                        // insert
                         $date = date("Y-m-d");
                         $userID = $_SESSION['id'];
                         $pinned = (bool) $pin;
-                        $category = $_POST['category'];
                         $queryString = "INSERT INTO Articles (title, content, category,date, userID, pinned) VALUES ('$title', '$content', '$category','$date', '$userID', '$pinned')";
                         
                         $query = $pdo->prepare($queryString);
@@ -62,7 +65,7 @@ include '../config/db.php';
                         $idPost=$query->fetch();
                         $idPost=$idPost[0];
 
-                        header("Location:./details.php/?id=$idPost");
+                        header("Location:./details.php?id=$idPost");
                     }catch (Exception $e) {
                         echo "Problem bro : ------> " . $e->getMessage();
                     }

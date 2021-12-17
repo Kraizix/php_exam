@@ -12,11 +12,25 @@ include '../config/db.php';
 
         if (isset($_POST['sub'])){
             switch ($_POST['sub']){ 
-                case 'like':
-                    echo "Like";
+                case 'favori-add':
+                    echo "This post is now amoung your Favorites";
+                    $queryString = "INSERT INTO favs (postID, userID) VALUES (:idPost,:idUser)";
+                    $data = [
+                        "idPost" => $idPost,
+                        "idUser" => $_SESSION['id']
+                    ];
+                    $query = $pdo->prepare($queryString);
+                    $query->execute($data);
                     break;
-                case 'favori':
-                    echo "Favori";
+                case 'favori-del':
+                    echo "This post is no longer among your favorites";
+                    $queryString = "DELETE FROM favs  WHERE postID = :idPost AND userID = :idUser";
+                    $data = [
+                        "idPost" => $idPost,
+                        "idUser" => $_SESSION['id']
+                    ];
+                    $query = $pdo->prepare($queryString);
+                    $query->execute($data);
                     break;
                 case 'delete':
                     echo "Delete";
@@ -64,9 +78,31 @@ include '../config/db.php';
                     }
                     ?>
                 </div>
-                
-                <button type="submit" name="sub" value="like">Like</button>
-                <button type="submit" name="sub" value="favori">Favori</button>
+                <?php
+                    // requête sql dans favs, je cherche le post ID 
+                    $queryString="SELECT * FROM favs WHERE postID = '".$idPost."'";
+                    $query = $pdo->prepare($queryString);
+                    $query->execute();
+                    $res=$query->fetchAll();
+                    // pour chaque resultats:
+                    $ok = false;
+                    foreach($res as $row) {
+                        // Vérifier si le userID est celui du user actuel
+                        if ($row['userID'] == $_SESSION['id']){
+                            // si c'est le cas, var = tru; break;
+                            $ok = true;
+                            break;
+                        }    
+                    }    
+                    //si le post est déjà favori (var == true);
+                    if ($ok){?>
+                        <button type="submit" name="sub" value="favori-del">Delete Favori</button>
+                    <?php
+                    }else if (!$ok){?>
+                        <button type="submit" name="sub" value="favori-add">Add Favori</button>
+                    <?php
+                    }
+                ?>
             </form>
         <?php
         }else{

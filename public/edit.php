@@ -9,17 +9,27 @@ $query = $pdo->prepare($queryString);
 $query->execute();
 $post=$query->fetch();
 
+$categories= unserialize($post['category']);
+var_dump($categories);
+
 if (isset($_POST['sub'])){
     switch ($_POST['sub']){
         case 'send':
             echo "SEND";
             $queryString="UPDATE Articles";
-            $queryString.=' SET title="'.$_POST["title"].'", content="'.$_POST["content"].'" ';
+            $queryString.=" SET title='".$_POST["title"]."', content='".$_POST["content"]."' ";
             if (isset($_POST['image'])){
-                $queryString.=', image="'.$_POST["image"].'" ';
+                $queryString.=", image='".$_POST["image"]."' ";
             }
-            $queryString.=', category="'.$_POST["category"].'" ';
-            $queryString.=" WHERE id = " . $idPost;
+            //serialize category array to insert in db
+            $catArray = explode(',', $_POST['category']);
+            $category = serialize($catArray);
+            var_dump($category);
+
+            $queryString.=", category='".$category;
+            $queryString.="'  WHERE id = " . $idPost;
+            
+            echo $queryString;
             $query= $pdo->prepare($queryString);
             $query->execute();
             header("Location:http://localhost:8080/details.php?id=$idPost");
@@ -33,7 +43,7 @@ if (isset($_POST['sub'])){
             break;
         case 'back':
             echo "here";
-            header("Location:http://localhost:8080/details.php?id=$idPost");
+            header("Location:http://localhost:8080/home.php");
             break;
 
     }
@@ -62,12 +72,14 @@ if (isset($_POST['sub'])){
                         <textarea name="content"><?=$post['content']?></textarea>
                     </div>
                     <div>
+                        Current categories : <?php foreach($categories as $category){ echo $category; } ?>
                         <select name="category" id="category">
-                            <option value="<?=$post['category']?>">--<?=strtoupper($post['category'])?>--</option>
+                            <option value="<?=$category?>">--Category--</option>
                             <option value="informatique">Informatique</option>
                             <option value="new">New</option>
                             <option value="anime">Animé</option>
                             <option value="event">Evènement</option>
+                            <option value="test">TEST</option>
                         </select>
                     </div>
                     

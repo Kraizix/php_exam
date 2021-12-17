@@ -20,10 +20,15 @@ include '../config/db.php';
                     break;
                 case 'delete':
                     echo "Delete";
+                    header("Location:http://localhost:8080/Method/delete.php?id=$idPost");
                     break;
                 case 'edit':
                     echo "Edit";
                     header("Location:http://localhost:8080/edit.php?id=$idPost");
+                    break;
+                case 'back':
+                    echo "here";
+                    header("Location:http://localhost:8080/home.php");
                     break;
             }
         }
@@ -36,7 +41,9 @@ include '../config/db.php';
             ?>
 
             <form method="POST">
-                
+                <div>
+                    <button type="submit" name="sub" value="back" >BACK</button>
+                </div>
                 <h1><?=$post['title']?></h1>
                 <?php
                 if (isset($_SESSION['id'])==$post['userID']){
@@ -72,5 +79,6 @@ include '../config/db.php';
             <?php 
         }
         ?>
+        
     </body>
 <?php view('footer') ?>

@@ -1,13 +1,55 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
 include '../config/db.php';
+
+
+if (isset($_POST['sub'])){
+    header("Location:http://localhost:8080/home.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <?php view('header', ['title' => 'New']) ?>
     <body>
         <?php
+        if (isset($_POST['title']) && isset($_POST['content'])) {
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $pin= $_POST['pin'] ?? 0;
+
+            try{
+                //serialize category array to insert in db
+                $catArray = explode(',', $_POST['category']);
+                $category = serialize($catArray);
+                // insert
+                $date = date("Y-m-d");
+                $userID = $_SESSION['id'];
+                $pinned = (bool) $pin;
+                $queryString = "INSERT INTO Articles (title, content, category,date, userID, pinned) VALUES ('$title', '$content', '$category','$date', '$userID', '$pinned')";
+                
+                $query = $pdo->prepare($queryString);
+                $query->execute();
+
+                $queryString = "SELECT id FROM Articles ORDER BY id DESC LIMIT 1";
+                $query = $pdo->prepare($queryString);
+                $query->execute();
+                $idPost=$query->fetch();
+                $idPost=$idPost[0];
+
+                header("Location:./details.php?id=$idPost");
+            }catch (Exception $e) {
+                echo "Problem bro : ------> " . $e->getMessage();
+            }
+        }else{
+            ?>
+            <label>Required Title and Content please</label>
+        <?php 
+        }
         if (isset($_SESSION['user'])){?>
             <form method="POST">
+                <div>
+                    <button type="submit" name="sub" value="back" >BACK</button>
+                </div>
                 <h1>Create Post</h1>
                 <div>
                     <input type="text" name="title" id="title" placeholder="title ... ">
@@ -25,6 +67,7 @@ include '../config/db.php';
                         <option value="new">New</option>
                         <option value="anime">Animé</option>
                         <option value="event">Evènement</option>
+                        <option value="test">TEST</option>
                     </select>
                 </div>
                 <div>
@@ -32,48 +75,8 @@ include '../config/db.php';
                     <input type="checkbox" name="pin" id="pin:"/>
                 </div>
                 <button type="submit">Submit</button>
-            </form>
-            <?php
-                $error=false;
-                if (isset($_POST['title']) && isset($_POST['content'])) {
-                    ?>
-                    <?php
-                        $title = $_POST['title'];
-                        $content = $_POST['content'];
-                        $pin= $_POST['pin'] ?? 0;
-                    ?> 
-                        <br>
-                        
-                    <?php 
-
-                    try{
-                        //serialize category array to insert in db
-                        $catArray = explode(',', $_POST['category']);
-                        $category = serialize($catArray);
-                        // insert
-                        $date = date("Y-m-d");
-                        $userID = $_SESSION['id'];
-                        $pinned = (bool) $pin;
-                        $queryString = "INSERT INTO Articles (title, content, category,date, userID, pinned) VALUES ('$title', '$content', '$category','$date', '$userID', '$pinned')";
-                        
-                        $query = $pdo->prepare($queryString);
-                        $query->execute();
-
-                        $queryString = "SELECT id FROM Articles ORDER BY id DESC LIMIT 1";
-                        $query = $pdo->prepare($queryString);
-                        $query->execute();
-                        $idPost=$query->fetch();
-                        $idPost=$idPost[0];
-
-                        header("Location:./details.php?id=$idPost");
-                    }catch (Exception $e) {
-                        echo "Problem bro : ------> " . $e->getMessage();
-                    }
-                }else{
-                    ?>
-                    <label>Required Title and Content please</label>
-                    <?php 
-                }?>
+                
+            </form>        
         <?php
         }else{
             ?>

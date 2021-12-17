@@ -2,8 +2,9 @@
 require __DIR__.'/../src/bootstrap.php';
 ?>
 <!DOCTYPE html>
-<?php view('header', ['title' => 'New']);
+<?php view('header', ['title' => 'HOME']);
 include '../config/db.php';
+
 ?>
 
 <body>

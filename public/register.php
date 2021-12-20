@@ -2,7 +2,9 @@
 require __DIR__.'/../src/bootstrap.php';
 include '../config/db.php';
 
-if (isset($_POST['username'])) {
+if(isset($_POST['login'])){
+    header("Location:http://localhost:8080/login.php");
+}else if (isset($_POST['username'])) {
     $data =$_POST;
     if (empty($data['username'])||
         empty($data['password'])||
@@ -64,5 +66,6 @@ if (isset($_POST['username'])) {
             <input type="password" name="password2" id="password2">
         </div>
         <button type="submit">Register</button>
+        <button type="submit" name="login">I already have a count</button>
     </form>
 <?php view('footer') ?>

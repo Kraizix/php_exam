@@ -2,8 +2,9 @@
 require __DIR__.'/../src/bootstrap.php';
 include '../config/db.php';
 
-if (isset($_POST['username'])) {
-    echo "HERE";
+if (isset($_POST['register'])){
+    header('Location:http://localhost:8080/register.php');
+}else if (isset($_POST['username'])) {
     $user = $_POST['username'];
     $password = $_POST['password'];
     try{
@@ -21,9 +22,9 @@ if (isset($_POST['username'])) {
                 session_start(); 
             } 
             $_SESSION['user'] = $user;
-            $_SESSION['admin'] = $currentUser['admin'];
+            $_SESSION['admin'] = (bool) $currentUser['admin'];
             $_SESSION['id'] = $currentUser['id'];
-            header("Location: index.php");
+            header("Location: home.php");
             die();
         } else {
             echo "Login failed: wrong password";
@@ -50,5 +51,6 @@ if (isset($_POST['username'])) {
             <input type="password" name="password" id="password">
         </div>
         <button type="submit">Login</button>
+        <button type="submit" name="register">I don't have account</button>
     </form>
 <?php view('footer') ?>

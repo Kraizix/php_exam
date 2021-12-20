@@ -10,6 +10,7 @@ include '../config/db.php';
 <body>
     <h1>HOME !</h1>
 
+    <?= var_dump($_SESSION['admin']);?>
     <h2>New:</h4>
         <?php
 // New articles
@@ -17,7 +18,6 @@ $queryString="SELECT * FROM Articles ORDER BY date DESC LIMIT 4";
 $results = $pdo->prepare($queryString);
 $results->execute();
 $posts=$results->fetchAll();
-
 foreach ($posts as $post){
     ?>
         <h3><?= $post["title"]?></h3>

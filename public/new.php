@@ -3,13 +3,15 @@ require __DIR__.'/../src/bootstrap.php';
 include '../config/db.php';
 
 
+ include_once '../src/inc/common.php';   
+ view('header', ['title' => 'New']) ;
+
 if (isset($_POST['sub'])){
     header("Location:http://localhost:8080/home.php");
     exit();
 }
 ?>
 <!DOCTYPE html>
-<?php view('header', ['title' => 'New']) ?>
     <body>
         <?php
         if (isset($_POST['title']) && isset($_POST['content'])) {

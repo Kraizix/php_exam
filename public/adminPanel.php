@@ -1,5 +1,6 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
+include_once '../src/inc/common.php';  
 include '../config/db.php';
 
 if (isset($_POST)){

@@ -1,6 +1,7 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
 include '../Config/db.php';
+include_once '../src/inc/common.php';  
 
 $idPost = $_GET['id'];
 
@@ -20,12 +21,7 @@ if (isset($_POST['sub'])){
             $category = serialize($catArray);
 
             $queryString= 'UPDATE Articles SET title="'.$_POST['title'].'", content="'.$_POST['content'].'"'.", category='".$category."' WHERE id =".$idPost;
-            $data = [
-                "title" => $_POST['title'], 
-                "content" => $_POST['content'], 
-                "category" => $category,
-                "postID" => $idPost
-            ];
+
             var_dump($data);
             $query= $pdo->prepare($queryString);
             $query->execute();
@@ -70,6 +66,8 @@ if (isset($_POST['sub'])){
 
 ?>
 <!DOCTYPE html>
+
+<?php include_once '../src/inc/common.php';   ?>
 <?php view('header', ['title' => 'Edit']) ?>
     <body>
         <?php

@@ -1,10 +1,11 @@
 <?php
 require __DIR__.'/../src/bootstrap.php';
 include '../config/db.php';
-
+include_once '../src/inc/common.php';  
+view('header', ['title' => 'Details'])
 ?>
+
 <!DOCTYPE html>
-<?php view('header', ['title' => 'Details']) ?>
     <body>
         <?php
         

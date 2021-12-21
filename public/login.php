@@ -5,6 +5,7 @@ include '../config/db.php';
 if (isset($_POST['register'])){
     header('Location:http://localhost:8080/register.php');
 }else if (isset($_POST['username'])) {
+
     $user = $_POST['username'];
     $password = $_POST['password'];
     try{
@@ -37,7 +38,6 @@ if (isset($_POST['register'])){
 }
 
 ?>
-
 <?php view('header', ['title' => 'Login']) ?>
 <body>
     <form action="login.php" method="POST">

@@ -10,36 +10,55 @@ $query->execute();
 $post=$query->fetch();
 
 $categories= unserialize($post['category']);
-var_dump($categories);
-
 if (isset($_POST['sub'])){
     switch ($_POST['sub']){
         case 'send':
             echo "SEND";
-            $queryString="UPDATE Articles";
-            $queryString.=" SET title='".$_POST["title"]."', content='".$_POST["content"]."' ";
-            if (isset($_POST['image'])){
-                $queryString.=", image='".$_POST["image"]."' ";
-            }
+            
             //serialize category array to insert in db
             $catArray = explode(',', $_POST['category']);
             $category = serialize($catArray);
-            var_dump($category);
 
-            $queryString.=", category='".$category;
-            $queryString.="'  WHERE id = " . $idPost;
-            
-            echo $queryString;
+            $queryString= 'UPDATE Articles SET title="'.$_POST['title'].'", content="'.$_POST['content'].'"'.", category='".$category."' WHERE id =".$idPost;
+            $data = [
+                "title" => $_POST['title'], 
+                "content" => $_POST['content'], 
+                "category" => $category,
+                "postID" => $idPost
+            ];
+            var_dump($data);
             $query= $pdo->prepare($queryString);
             $query->execute();
-            header("Location:http://localhost:8080/details.php?id=$idPost");
+
+            if (isset($_POST['image'])){
+                $queryString= "UPDATE Articles SET image=\':image\' WHERE id = :postID";
+                $data = [
+                    "image" => $_POST['image']
+                ];
+                $query= $pdo->prepare($queryString);
+                $query->execute($data);
+            }
+            
+            if (isset($_SESSION['LastPage'])){
+                $destination = $_SESSION['LastPage'];
+                unset($_SESISON['LastPage']);
+                header('Location: http://localhost:8080/'.$destination);
+            }else{
+                header('Location: http://localhost:8080/details.php?id='.$idPost);
+            }
             break;
         case 'cancel':
-            header("Location:http://localhost:8080/details.php?id=$idPost");
+            if (isset($_SESSION['LastPage'])){
+                $destination = $_SESSION['LastPage'];
+                unset($_SESISON['LastPage']);
+                header('Location: http://localhost:8080/'.$destination);
+            }else{
+                header('Location: http://localhost:8080/details.php?id='.$idPost);
+            }
             break;
         case 'delete':
             echo "delete";
-            header("Location:http://localhost:8080/Method/delete.php?id=$idPost");
+            header("Location:http://localhost:8080/Method/deletePost.php?id=$idPost");
             break;
         case 'back':
             echo "here";

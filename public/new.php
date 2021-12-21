@@ -25,10 +25,18 @@ if (isset($_POST['sub'])){
                 $date = date("Y-m-d");
                 $userID = $_SESSION['id'];
                 $pinned = (bool) $pin;
-                $queryString = "INSERT INTO Articles (title, content, category,date, userID, pinned) VALUES ('$title', '$content', '$category','$date', '$userID', '$pinned')";
-                
+                $queryString = 'INSERT INTO Articles (title, content, category,date, userID, pinned) VALUES (:title, :content, :category,:date, :userID, :pinned)';
+                $data = [
+                    "title" => $title, 
+                    "content" => $content,
+                    "category" => $category,
+                    "date" => $date,
+                    "userID" => $userID,
+                    "pinned" => $pinned
+                ];
+
                 $query = $pdo->prepare($queryString);
-                $query->execute();
+                $query->execute($data);
 
                 $queryString = "SELECT id FROM Articles ORDER BY id DESC LIMIT 1";
                 $query = $pdo->prepare($queryString);
@@ -39,6 +47,7 @@ if (isset($_POST['sub'])){
                 header("Location:./details.php?id=$idPost");
             }catch (Exception $e) {
                 echo "Problem bro : ------> " . $e->getMessage();
+                echo $_POST['content'];
             }
         }else{
             ?>

@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS Users(
     id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
     username VARCHAR(255) NOT NULL UNIQUE,
     mail VARCHAR(255) NOT NULL UNIQUE,
-    image VARCHAR(255) NOT NULL,
+    image VARCHAR(255) NOT NULL default "../../content/default/default.png",
     description TEXT,
     joinDate DATE NOT NULL,
     pass VARCHAR(255) NOT NULL,

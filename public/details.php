@@ -34,7 +34,7 @@ include '../config/db.php';
                     break;
                 case 'delete':
                     echo "Delete";
-                    header("Location:http://localhost:8080/Method/delete.php?id=$idPost");
+                    header("Location:http://localhost:8080/Method/deletePost.php?id=$idPost");
                     break;
                 case 'edit':
                     echo "Edit";

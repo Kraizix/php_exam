@@ -6,10 +6,11 @@ view('header', ['title' => 'HOME']);
 include '../config/db.php';
 ?>
 
-<body>
+<body class="pushable">
     <div class="container">
         <div class="home">
-            <img class="ui fluid image" style="object-fit: cover;" src="./content/banner/banner.jpg"></img>
+            <img class="ui fluid image" style="object-fit: cover; position: inherit;"
+                src="./content/banner/banner.jpg"></img>
             <!-- Site content !-->
             <?= var_dump($_SESSION['admin']);?>
         </div>
@@ -17,12 +18,49 @@ include '../config/db.php';
             <h2>New:</h4>
                 <?php
             // New articles
-            $queryString="SELECT * FROM Articles ORDER BY date DESC LIMIT 4";
+            $queryString="SELECT Articles.id, title, content, Articles.image AS postImage, category, date, userID, pinned, username, Users.image AS avatar FROM Articles
+            INNER JOIN Users ON userID = Users.id ORDER BY date DESC LIMIT 4";
             $results = $pdo->prepare($queryString);
             $results->execute();
             $posts=$results->fetchAll();
             foreach ($posts as $post){
             ?>
+                <a class="ui card" href="http://localhost:8080/details.php?id=<?= $post["id"] ?>">
+                    <div class="ui raised link card">
+                        <div class="content">
+                            <div class="header"><?= $post['title'] ?></div>
+                            <div class="meta">
+                                <?php
+                        $catArray = unserialize($post["category"]);
+                        foreach ($catArray as $category) { ?>
+                                <div class="ui label"><?= $category ?></div>
+                                <?php } ?>
+                            </div>
+                            <div class="description">
+                                <p><?= $post["content"]?></p>
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <img class="ui avatar image" src="<?= $post["avatar"] ?>"> By <?= $post["username"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                        </div>
+                    </div>
+                </a>
+                <?php } ?>
+        </div>
+        <div class="trend">
+            <h2>Tendances :</h2>
+
+            <?php
+            //Tendances :
+                $favQuery = "SELECT Articles.id, title, content, image, category, date, Articles.userID, pinned, count(Favs.id) AS nbFavs
+                FROM Articles INNER JOIN Favs ON Articles.id = postID GROUP BY postID ORDER BY count(Favs.id) DESC LIMIT 4";
+                $results = $pdo->prepare($favQuery);
+                $results->execute();
+                $posts = $results->fetchAll();
+
+                foreach ($posts as $post){
+            ?>
+            <a class="ui card" href="http://localhost:8080/details.php?id=<?= $post["id"] ?>">
                 <div class="ui raised link card">
                     <div class="content">
                         <div class="header"><?= $post['title'] ?></div>
@@ -41,39 +79,7 @@ include '../config/db.php';
                         By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
                     </div>
                 </div>
-                <?php } ?>
-        </div>
-        <div class="trend">
-            <h2>Tendances :</h2>
-
-            <?php
-            //Tendances :
-                $favQuery = "SELECT Articles.id, title, content, image, category, date, Articles.userID, pinned, count(Favs.id) AS nbFavs
-                FROM Articles INNER JOIN Favs ON Articles.id = postID GROUP BY postID ORDER BY count(Favs.id) DESC LIMIT 4";
-                $results = $pdo->prepare($favQuery);
-                $results->execute();
-                $posts = $results->fetchAll();
-
-                foreach ($posts as $post){
-            ?>
-            <div class="ui raised link card">
-                <div class="content">
-                    <div class="header"><?= $post['title'] ?></div>
-                    <div class="meta">
-                        <?php
-                        $catArray = unserialize($post["category"]);
-                        foreach ($catArray as $category) { ?>
-                        <div class="ui label"><?= $category ?></div>
-                        <?php } ?>
-                    </div>
-                    <div class="description">
-                        <p><?= $post["content"]?></p>
-                    </div>
-                </div>
-                <div class="extra content">
-                    By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
-                </div>
-            </div>
+            </a>
             <?php } ?>
         </div>
         <div class="search-posts">
@@ -125,52 +131,74 @@ include '../config/db.php';
                     } else {
                 foreach ($posts as $post) {
             ?>
-            <div class="ui raised link card">
-                <div class="content">
-                    <div class="header"><?= $post['title'] ?></div>
-                    <div class="meta">
-                        <?php
+            <a class="ui card" href="http://localhost:8080/details.php?id=<?= $post["id"] ?>">
+                <div class="ui raised link card">
+                    <div class="content">
+                        <div class="header"><?= $post['title'] ?></div>
+                        <div class="meta">
+                            <?php
                         $catArray = unserialize($post["category"]);
                         foreach ($catArray as $category) { ?>
-                        <div class="ui label"><?= $category ?></div>
-                        <?php } ?>
+                            <div class="ui label"><?= $category ?></div>
+                            <?php } ?>
+                        </div>
+                        <div class="description">
+                            <p><?= $post["content"]?></p>
+                        </div>
                     </div>
-                    <div class="description">
-                        <p><?= $post["content"]?></p>
+                    <div class="extra content">
+                        By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
                     </div>
                 </div>
-                <div class="extra content">
-                    By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
-                </div>
-            </div>
+            </a>
             <?php       }
                     }
                 } else {
+                 $squery = "SELECT * FROM Articles";
+                    $results = $pdo->prepare($squery);
+                    $results->execute();
+                    $posts = $results->fetchAll();
+                    if (empty($posts)) {
+                        echo "<p>Pas de résultat...</p>";
+                    } else {
+                foreach ($posts as $post) {
             ?>
-            <br>
-            <p>Il manque un query !</p>
-            <?php
+            <a class="ui card" href="http://localhost:8080/details.php?id=<?= $post["id"] ?>">
+                <div class="ui raised link card">
+                    <div class="content">
+                        <div class="header"><?= $post['title'] ?></div>
+                        <div class="meta">
+                            <?php
+                        $catArray = unserialize($post["category"]);
+                        foreach ($catArray as $category) { ?>
+                            <div class="ui label"><?= $category ?></div>
+                            <?php } ?>
+                        </div>
+                        <div class="description">
+                            <p><?= $post["content"]?></p>
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                    </div>
+                </div>
+            </a>
+            <?php   }
                 }
+            }
             ?>
         </div>
     </div>
-
-            
-    <?php view('footer') ?>
 
     <script>
         $(document).ready(function () {
             $('#multi-select')
                 .dropdown();
-        })
-
-        $('button').click(function () {
             $('.ui.sidebar')
                 .sidebar('setting', 'transition', 'overlay')
-                .sidebar('toggle')
         })
     </script>
-    </div>
 </body>
+<?php view('footer') ?>
 
 {{ end }}

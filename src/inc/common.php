@@ -15,28 +15,38 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
-<body>
-    <button class="ui left floated button primary">
-        <i class="align justify icon"></i>
-    </button>
-    <div class="ui left vertical inverted menu sidebar">
-        <a class="item" href="home.php">
-            Home
-        </a>
-        <a class="item" href="new.php">
-            Add Post
-        </a>
-        <a class="item" href="account.php">
-            Profile
-        </a>
-        <a class="item" href="adminPanel.php">
-            Admin
-        </a>
+
+<button style="position: fixed; margin: 1% 1%" class="ui left floated large button basic primary">
+    <i class="fa-solid fa-bars"></i>
+</button>
+<div class="ui left vertical inverted labeled icon menu sidebar">
+    <a class="item" href="home.php">
+    <i class="home icon"></i>
+        Home
+    </a>
+    <a class="item" href="new.php">
+    <i class="plus square outline icon"></i>
+        Add Post
+    </a>
+    <a class="item" href="account.php">
+    <i class="user circle icon"></i>
+        Profile
+    </a>
+    <a class="item" href="adminPanel.php">
+    <i class="shield alternate icon"></i>
+        Admin
+    </a>
 </div>
 
-    <?php
+<script type="text/javascript">
+    $('button').click(function () {
+        $('.ui.sidebar')
+            .sidebar('toggle')
+    })
+</script>
+
+<?php
     if (!isset($_SESSION['user'])){
         header('Location: http://localhost:8080/login.php');
     }
 ?>
-</body>

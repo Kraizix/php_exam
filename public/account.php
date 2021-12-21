@@ -31,7 +31,7 @@ if (isset($_SESSION['user'])){
     }
 ?>
     <?php if (isset($_GET['id'])){
-        $queryString = "SELECT * FROM users WHERE id = '" . $_GET['id']."'";
+        $queryString = "SELECT * FROM Users WHERE id = '" . $_GET['id']."'";
         $query = $pdo->prepare($queryString);
         $query->execute();
         $user=$query->fetch();
@@ -76,7 +76,7 @@ if (isset($_SESSION['user'])){
                 </div>
             </div>
     <?php } else {
-        $queryString = "SELECT * FROM users WHERE username = '" . $_SESSION['user']."'";
+        $queryString = "SELECT * FROM Users WHERE username = '" . $_SESSION['user']."'";
         $query = $pdo->prepare($queryString);
         $query->execute();
         $user=$query->fetch();

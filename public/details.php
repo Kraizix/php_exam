@@ -15,7 +15,7 @@ view('header', ['title' => 'Details'])
             switch ($_POST['sub']){ 
                 case 'favori-add':
                     echo "This post is now amoung your Favorites";
-                    $queryString = "INSERT INTO favs (postID, userID) VALUES (:idPost,:idUser)";
+                    $queryString = "INSERT INTO Favs (postID, userID) VALUES (:idPost,:idUser)";
                     $data = [
                         "idPost" => $idPost,
                         "idUser" => $_SESSION['id']
@@ -25,7 +25,7 @@ view('header', ['title' => 'Details'])
                     break;
                 case 'favori-del':
                     echo "This post is no longer among your favorites";
-                    $queryString = "DELETE FROM favs  WHERE postID = :idPost AND userID = :idUser";
+                    $queryString = "DELETE FROM Favs  WHERE postID = :idPost AND userID = :idUser";
                     $data = [
                         "idPost" => $idPost,
                         "idUser" => $_SESSION['id']
@@ -81,7 +81,7 @@ view('header', ['title' => 'Details'])
                 </div>
                 <?php
                     // requête sql dans favs, je cherche le post ID 
-                    $queryString="SELECT * FROM favs WHERE postID = '".$idPost."'";
+                    $queryString="SELECT * FROM Favs WHERE postID = '".$idPost."'";
                     $query = $pdo->prepare($queryString);
                     $query->execute();
                     $res=$query->fetchAll();

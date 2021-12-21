@@ -38,20 +38,29 @@ if (!isset($_SESSION['user'])){
         $articles = $query->fetchAll();
         foreach($articles as $article){
             ?>
-            <h3><?= $article["title"]?></h3>
-            <h4><?php
-                $catArray = unserialize($article["category"]);
-                foreach ($catArray as $category) {
-                    echo $category . " ";
-                }
-            ?></h4>
-            <p><?= $article["content"]?></p>
-            <h4>By <?= $article["userID"]?> <i> Ajouter le join pour le username plus tard !</i></h4>
-            <h4><?= $article["pinned"] == 1 ? "Pinned" : "Not Pinned" ?></h4>
-            <div>           
-                <button type="submit" name="deletePost" value="<?=$article["id"]?>">Delete</button>
-                <button type="submit" name="modifPost" value="<?=$article["id"]?>">Edit</button>
+            <div class="ui raised link card">
+                <div class="content">
+                    <div class="header"><?= $article['title'] ?></div>
+                    <div class="meta">
+                        <?php
+                        $catArray = unserialize($article["category"]);
+                        foreach ($catArray as $category) { ?>
+                        <div class="ui label"><?= $category ?></div>
+                        <?php } ?>
+                    </div>
+                    <div class="description">
+                        <p><?= $article["content"]?></p>
+                    </div>
+                </div>
+                <div class="extra content">
+                    By User_<?= $article["userID"] ?> -- <?= $article["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                </div>
+                <div>           
+                    <button type="submit" name="deletePost" value="<?=$article["id"]?>">Delete</button>
+                    <button type="submit" name="modifPost" value="<?=$article["id"]?>">Edit</button>
+                </div>
             </div>
+            
 
             <?php
         }
@@ -67,16 +76,36 @@ if (!isset($_SESSION['user'])){
         $users = $query->fetchAll();
         foreach($users as $user){
     ?>
-            <h3><?= $user["username"]?></h3>
-            <img src="<?= $user["image"]?>" style="width : 15%; height : 25%;">
-            <p><?= $user["description"] ?> </p>
-            <h4>join us on <?= $user["joinDate"]?></h4>
-            <p>-----------------------</p>
-            |---<button type="submit" name="deleteUser" value="<?=$user["id"]?>">Kill him/her</button>---|
-            <p>-----------------------</p>
+            <div class="ui special cards">
+                <div class="card">
+                    <div class="blurring dimmable image">
+                    <div class="ui dimmer">
+                        <div class="content">
+                        <div class="center">
+                            <button class="ui inverted button" type="submit" name="deleteUser" value="<?=$user["id"]?>">Kill him/her</button>
+                        </div>
+                        </div>
+                    </div>
+                    <img src="<?= $user["image"]?>">
+                    </div>
+                    <div class="content">
+                    <a class="header"><?= $user["username"]?></a>
+                    <div class="meta">
+                        <span class="date">Join us on <?= $user["joinDate"]?></span>
+                    </div>
+                    </div>
+                    <div class="extra content">
+                    </div>
+                </div>
+            </div>
             <?php
         }
         ?>
     </form>
     <?php
-}
+}?>
+<script>
+$('.special.cards .image').dimmer({
+  on: 'hover'
+});
+</script>

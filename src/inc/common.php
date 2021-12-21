@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <head>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
         integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -13,14 +12,14 @@
 
 <body>
         <button class="ui button primary">
-            Show Menu
+            <i class="align justify icon"></i>
         </button>
         <div class="ui left vertical inverted menu sidebar">
             <a class="item" href="home.php">
                 Home
             </a>
-            <a class="item" href="home.php">
-                Posts
+            <a class="item" href="new.php">
+                Add Post
             </a>
             <a class="item">
                 Profile

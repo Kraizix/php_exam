@@ -145,5 +145,3 @@ foreach ($posts as $post){
     </script>
 </body>
 <?php view('footer') ?>
-
-{{ end }}

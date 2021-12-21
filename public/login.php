@@ -51,6 +51,8 @@ if (isset($_POST['register'])){
             <input type="password" name="password" id="password">
         </div>
         <button type="submit">Login</button>
-        <button type="submit" name="register">I don't have account</button>
+        <a href ="register.php">
+            I don't have an account
+        </a>
     </form>
 <?php view('footer') ?>

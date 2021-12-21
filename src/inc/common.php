@@ -26,7 +26,7 @@
         <a class="item" href="new.php">
             Add Post
         </a>
-        <a class="item">
+        <a class="item" href="account.php">
             Profile
         </a>
         <a class="item" href="adminPanel.php">

@@ -15,8 +15,11 @@ if(isset($_POST['login'])){
     $user = $data['username'];
     $password = $data['password'];
     $password2 = $data['password2'];
+    if ($password != $password2) {
+        die('Password mismatch');
+    }
     $email = $data['email'];
-    $image = "../content/default/default.png";
+    $image = "./content/default/default.png";
     $date = date("Y-m-d H:i:s");
     $options = [
         'cost' => 12,
@@ -25,7 +28,6 @@ if(isset($_POST['login'])){
     try {
         $hash = password_hash($password,PASSWORD_BCRYPT,$options);
         $query= "INSERT INTO Users(username,pass,mail,joinDate,image) VALUES (:username, :pass, :mail, :joinDate, :image)";
-
         $datas = [
             "username" => $user,
             "pass" => $hash,
@@ -38,6 +40,7 @@ if(isset($_POST['login'])){
         $results->execute($datas);
     }catch (PDOException $e){
         echo "Error: " . $query . "<br>" . $pdo->error;
+        exit;
     }
     echo "Inserted successfully";
     header("Location:login.php");
@@ -66,6 +69,6 @@ if(isset($_POST['login'])){
             <input type="password" name="password2" id="password2">
         </div>
         <button type="submit">Register</button>
-        <button type="submit" name="login">I already have a count</button>
+        <a href="login.php">I already have an account</a>
     </form>
 <?php view('footer') ?>

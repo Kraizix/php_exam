@@ -140,7 +140,7 @@ include '../config/db.php';
                     </div>
                 </div>
                 <div class="extra content">
-                    <a href="account.php?=<?= $post["userID"] ?>">By User_<?= $post["userID"] ?></a> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                    By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
                 </div>
             </div>
             <?php       }

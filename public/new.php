@@ -101,10 +101,3 @@ if (isset($_POST['sub'])){
         ?>
     </body>
 <?php view('footer') ?>
-
-<script>
-        $(document).ready(function () {
-            $('#multi-select')
-                .dropdown();
-        })
-    </script>

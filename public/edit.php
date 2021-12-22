@@ -89,16 +89,14 @@ if (isset($_POST['sub'])){
                                 <div class="meta">
                                     <?php
                                     $catArray = unserialize($post["category"]);
-                                    foreach ($catArray as $category) { ?>
-                                    <div class="ui label"><?= $category ?></div>
-                                    <?php } ?>
+                                    ?>
                                     <select name="category[]" class="ui selection dropdown" multiple="" id="multi-select">
                                         <option value="">Categories</option>    
-                                        <option value="informatique">Informatique</option>
-                                        <option value="new">New</option>
-                                        <option value="anime">Anime</option>
-                                        <option value="event">Event</option>
-                                        <option value="test">Test</option>
+                                        <option value="informatique" <?php if(in_array("informatique",$catArray)){?> selected="selected"<?php }?>>Informatique</option>
+                                        <option value="new" <?php if(in_array("new",$catArray)){?> selected="selected"<?php }?>>New</option>
+                                        <option value="anime" <?php if(in_array("anime",$catArray)){?> selected="selected"<?php }?>>Anime</option>
+                                        <option value="event" <?php if(in_array("event",$catArray)){?> selected="selected"<?php }?>>Event</option>
+                                        <option value="test" <?php if(in_array("test",$catArray)){?> selected="selected"<?php }?>>Test</option>
                                     </select>
                                 </div>
                                 <div class="description">

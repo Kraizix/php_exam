@@ -18,16 +18,16 @@ if (isset($_POST['sub'])){
             $title = $_POST['title'];
             $content = $_POST['content'];
             $pin= $_POST['pin'] ?? 0;
-
             try{
                 //serialize category array to insert in db
-                $catArray = explode(',', $_POST['category']);
-                $category = serialize($catArray);
+                var_dump($_POST['category']);
+                $category = serialize($_POST['category']);
+                var_dump($category);
                 // insert
                 $date = date("Y-m-d");
                 $userID = $_SESSION['id'];
                 $pinned = (bool) $pin;
-                $queryString = 'INSERT INTO Articles (title, content, category,date, userID, pinned) VALUES (:title, :content, :category,:date, :userID, :pinned)';
+                $queryString = 'INSERT INTO Articles (title, content, category,date, userID, pinned) VALUES (:title, :content,:category,:date, :userID, :pinned)';
                 $data = [
                     "title" => $title, 
                     "content" => $content,
@@ -36,7 +36,7 @@ if (isset($_POST['sub'])){
                     "userID" => $userID,
                     "pinned" => $pinned
                 ];
-
+                var_dump($data["category"]);
                 $query = $pdo->prepare($queryString);
                 $query->execute($data);
 
@@ -62,30 +62,30 @@ if (isset($_POST['sub'])){
                     <button type="submit" name="sub" value="back" >BACK</button>
                 </div>
                 <h1>Create Post</h1>
-                <div>
-                    <input type="text" name="title" id="title" placeholder="title ... ">
-                </div>
-                <div>
-                    <input type="text" name="content" id="content" placeholder="Tell us what you want ... ">
-                </div>
-                <div>
-                    <!--Dropdown style VALENTIN -->
+                <div class="ui card centered" style="transform:scale(1); width:75%; margin-top:10%;">
+                    <div class="content">
+                        <div class="header">
+                            <input type="text" name="title" id="title" placeholder="title ... ">
+                        </div>
+                        <div class="description">
+                            <textarea  name="content" id="content" rows="7" placeholder="Tell us what you want ... "></textarea>
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <select name="category[]" class="ui selection dropdown" multiple="" id="multi-select">
+                            <option value="">Categories</option>    
+                            <option value="informatique">Informatique</option>
+                            <option value="new">New</option>
+                            <option value="anime">Anime</option>
+                            <option value="event">Event</option>
+                            <option value="test">Test</option>
+                        </select>
+                        <i class="thumbtack icon" style="margin-left:20%;"></i>
+                        <input type="checkbox" name="pin" id="pin:"/>
 
-                    <label for="category">Category:</label>
-                    <select name="category" id="category">
-                        <option value="">--Please choose an category--</option>
-                        <option value="informatique">Informatique</option>
-                        <option value="new">New</option>
-                        <option value="anime">Animé</option>
-                        <option value="event">Evènement</option>
-                        <option value="test">TEST</option>
-                    </select>
+                        <button type="submit" style="margin-left:90%;">Submit</button>
+                    </div>
                 </div>
-                <div>
-                    <label for="pin">Pin</label>
-                    <input type="checkbox" name="pin" id="pin:"/>
-                </div>
-                <button type="submit">Submit</button>
                 
             </form>        
         <?php
@@ -101,3 +101,10 @@ if (isset($_POST['sub'])){
         ?>
     </body>
 <?php view('footer') ?>
+
+<script>
+        $(document).ready(function () {
+            $('#multi-select')
+                .dropdown();
+        })
+    </script>

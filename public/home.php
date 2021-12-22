@@ -14,6 +14,7 @@ include '../config/db.php';
             <!-- Site content !-->
             <?= var_dump($_SESSION['admin']);?>
         </div>
+    </div>
         <div class="new">
             <h2>New:</h4>
                 <?php
@@ -76,7 +77,7 @@ include '../config/db.php';
                         </div>
                     </div>
                     <div class="extra content">
-                        By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                        <img class="ui avatar image" src="<?= $post["avatar"] ?>"> By <?= $post["username"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
                     </div>
                 </div>
             </a>
@@ -94,8 +95,9 @@ include '../config/db.php';
                     <select name="category[]" class="ui selection dropdown" multiple="" id="multi-select">
                         <option value="informatique">Informatique</option>
                         <option value="new">New</option>
-                        <option value="anime">Animé</option>
-                        <option value="event">Evènement</option>
+                        <option value="anime">Anime</option>
+                        <option value="event">Event</option>
+                        <option value="test">Test</option>
                     </select>
                 </div>
                 <button type="submit" class="ui labeled icon button">
@@ -179,7 +181,7 @@ include '../config/db.php';
                         </div>
                     </div>
                     <div class="extra content">
-                        By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                        <img class="ui avatar image" src="<?= $post["avatar"] ?>"> By <?= $post["username"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
                     </div>
                 </div>
             </a>
@@ -200,5 +202,4 @@ include '../config/db.php';
     </script>
 </body>
 <?php view('footer') ?>
-
-{{ end }}
+᲼

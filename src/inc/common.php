@@ -43,6 +43,11 @@
         $('.ui.sidebar')
             .sidebar('toggle')
     })
+
+        $(document).ready(function () {
+            $('#multi-select')
+                .dropdown();
+        })
 </script>
 
 <?php

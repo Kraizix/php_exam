@@ -4,23 +4,35 @@ session_start();
 
 $idPost= $_GET['id'];
 
-$queryString= "DELETE FROM Articles WHERE id=". $idPost;
+$queryString= "SELECT userID FROM Articles WHERE id=". $idPost;
 $query= $pdo->prepare($queryString);
 $query->execute();
+$post=$query->fetch();
 
-$queryString= "DELETE FROM Favs WHERE postID=". $idPost;
-$query= $pdo->prepare($queryString);
-$query->execute();
+$userID=$post['userID'];
 
-$queryString= "DELETE FROM Comments WHERE postID=". $idPost;
-$query= $pdo->prepare($queryString);
-$query->execute();
+if ($_SESSION['admin'] || ($_SESSION['id']==$userID)){
+    $queryString= "DELETE FROM Articles WHERE id=". $idPost;
+    $query= $pdo->prepare($queryString);
+    $query->execute();
 
-if (isset($_SESSION['LastPage'])){
-    $destination = $_SESSION['LastPage'];
-    unset($_SESISON['LastPage']);
-    header('Location: http://localhost:8080/'.$destination);
+    $queryString= "DELETE FROM Favs WHERE postID=". $idPost;
+    $query= $pdo->prepare($queryString);
+    $query->execute();
+
+    $queryString= "DELETE FROM Comments WHERE postID=". $idPost;
+    $query= $pdo->prepare($queryString);
+    $query->execute();
+
+    if (isset($_SESSION['LastPage'])){
+        $destination = $_SESSION['LastPage'];
+        unset($_SESISON['LastPage']);
+        header('Location: http://localhost:8080/'.$destination);
+    }else{
+        header('Location: http://localhost:8080/home.php');
+    }
 }else{
-    header('Location: http://localhost:8080/home.php');
+    echo "Eh... T'es qui en fait?";
 }
+
 exit();

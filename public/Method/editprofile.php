@@ -24,7 +24,7 @@
 
     function updateUser(int $id,$file,string $username,string $desc,string $email,string $password,$pdo){
         $user = getUserByID($id,$pdo);
-        echo print_r($user);
+        //echo print_r($user);
         $fname= "";
         if (!is_uploaded_file($file['tmp_name'])){
             $fname = $user['image'];
@@ -32,7 +32,7 @@
             try{
                 rrmdir('./content/'.$_SESSION['id'].'/');
             } catch(Exception $e){
-                echo $e;
+                //echo $e;
             }
             mkdir('./content/'.$_SESSION['id'].'/');
             $tmpName = $file['tmp_name'];
@@ -57,10 +57,10 @@
             ];
             $password = password_hash($password,PASSWORD_BCRYPT,$options);
         }
-        echo "";
-        echo $username,$password,$desc,$email,$fname;
+        //echo "";
+        //echo $username,$password,$desc,$email,$fname;
         $queryString = "UPDATE users SET username = '$username', mail = '$email', pass = '$password', image = '$fname', description = '$desc' WHERE id='$id'";
-        echo($queryString);
+        //echo($queryString);
         $query = $pdo->prepare($queryString);
         $query->execute();
         $_SESSION['user'] = $username;

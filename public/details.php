@@ -56,54 +56,72 @@ view('header', ['title' => 'Details'])
             ?>
 
             <form method="POST">
+                <div class="ui card centered" style="transform:scale(1.5); margin-top:10%;">
+                    <div class="content">
+                        <div class="header"><?= $post['title'] ?></div>
+                        <div class="meta">
+                            <?php
+                    $catArray = unserialize($post["category"]);
+                    foreach ($catArray as $category) { ?>
+                            <div class="ui label"><?= $category ?></div>
+                            <?php } ?>
+                        </div>
+                        <div class="description">
+                            <p><?= $post["content"]?></p>
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <img class="ui avatar image" src="<?= $post["avatar"] ?>"> By <?= $post["username"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                    </div>
+                    <div class="extra content">
+                        <div class="ui three buttons">
+                            <?php
+                                if ($post["userID"]==$_SESSION["id"]){?>
+                                    <button class="ui basic green button" type="submit" name="sub" value="edit">Edit</button>
+                                    <button class="ui basic red button" type="submit" name="sub" value="delete">Delete</button>
+                                <?php }else {?>
+                                    <button class="ui basic green button disabled" type="submit" name="sub" value="edit">Edit</button>
+                                    <button class="ui basic red button disabled" type="submit" name="sub" value="delete">Delete</button>
+                                <?php
+                                }
+                            ?>
+                            
+                            
+                            <?php
+                                // requête sql dans favs, je cherche le post ID 
+                                $queryString="SELECT * FROM Favs WHERE postID = '".$idPost."'";
+                                $query = $pdo->prepare($queryString);
+                                $query->execute();
+                                $res=$query->fetchAll();
+                                // pour chaque resultats:
+                                $ok = false;
+                                foreach($res as $row) {
+                                    // Vérifier si le userID est celui du user actuel
+                                    if ($row['userID'] == $_SESSION['id']){
+                                        // si c'est le cas, var = tru; break;
+                                        $ok = true;
+                                        break;
+                                    }    
+                                }    
+                                //si le post est déjà favori (var == true);
+                                if ($ok){?>
+                                    <button class="ui basic blue button" type="submit" name="sub" value="favori-del">Delete Favori</button>
+                                <?php
+                                }else if (!$ok){?>
+                                    <button class="ui basic blue button" type="submit" name="sub" value="favori-add">Add Favori</button>
+                                <?php
+                                }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div>
                     <button type="submit" name="sub" value="back" >BACK</button>
                 </div>
-                <h1><?=$post['title']?></h1>
-                <?php
-                if (isset($_SESSION['id'])==$post['userID']){
-                ?>
-                    <button type="submit" name="sub" value="edit">Edit</button>
-                    <button type="submit" name="sub" value="delete">Delete</button>
-                <?php
-                }
-                ?>
-                <div>
-                    <?=$post['content']?>
-                </div>
-                <div>
-                    <?php
-                    $carArray = unserialize($post['category']);
-                    foreach($carArray as $category) {
-                        echo $category." ";
-                    }
-                    ?>
-                </div>
-                <?php
-                    // requête sql dans favs, je cherche le post ID 
-                    $queryString="SELECT * FROM Favs WHERE postID = '".$idPost."'";
-                    $query = $pdo->prepare($queryString);
-                    $query->execute();
-                    $res=$query->fetchAll();
-                    // pour chaque resultats:
-                    $ok = false;
-                    foreach($res as $row) {
-                        // Vérifier si le userID est celui du user actuel
-                        if ($row['userID'] == $_SESSION['id']){
-                            // si c'est le cas, var = tru; break;
-                            $ok = true;
-                            break;
-                        }    
-                    }    
-                    //si le post est déjà favori (var == true);
-                    if ($ok){?>
-                        <button type="submit" name="sub" value="favori-del">Delete Favori</button>
-                    <?php
-                    }else if (!$ok){?>
-                        <button type="submit" name="sub" value="favori-add">Add Favori</button>
-                    <?php
-                    }
-                ?>
+                
+                
             </form>
         <?php
         }else{

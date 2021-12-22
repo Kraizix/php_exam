@@ -11,6 +11,7 @@ $query->execute();
 $post=$query->fetch();
 
 $categories= unserialize($post['category']);
+var_dump($categories);
 if (isset($_POST['sub'])){
     switch ($_POST['sub']){
         case 'send':
@@ -37,7 +38,7 @@ if (isset($_POST['sub'])){
             
             if (isset($_SESSION['LastPage'])){
                 $destination = $_SESSION['LastPage'];
-                unset($_SESISON['LastPage']);
+                unset($_SESSION['LastPage']);
                 header('Location: http://localhost:8080/'.$destination);
             }else{
                 header('Location: http://localhost:8080/details.php?id='.$idPost);
@@ -46,7 +47,7 @@ if (isset($_POST['sub'])){
         case 'cancel':
             if (isset($_SESSION['LastPage'])){
                 $destination = $_SESSION['LastPage'];
-                unset($_SESISON['LastPage']);
+                unset($_SESSION['LastPage']);
                 header('Location: http://localhost:8080/'.$destination);
             }else{
                 header('Location: http://localhost:8080/details.php?id='.$idPost);
@@ -80,9 +81,39 @@ if (isset($_POST['sub'])){
                 <?php
                 if ($_SESSION['id']==$post['userID']){
                 ?>
-                    <div>
-                        <button type="submit" name="sub" value="cancel">Cancel</button>
-                    </div>
+                        <div class="ui card centered" style="transform:scale(1.5); margin-top:10%;">
+                            <div class="content">
+                                <div class="header">
+                                    <input type="text" name="title" value="<?=$post['title']?>"/>
+                                </div>
+                                <div class="meta">
+                                    <?php
+                                    $catArray = unserialize($post["category"]);
+                                    foreach ($catArray as $category) { ?>
+                                    <div class="ui label"><?= $category ?></div>
+                                    <?php } ?>
+                                    <select name="category[]" class="ui selection dropdown" multiple="" id="multi-select">
+                                        <option value="">Categories</option>    
+                                        <option value="informatique">Informatique</option>
+                                        <option value="new">New</option>
+                                        <option value="anime">Anime</option>
+                                        <option value="event">Event</option>
+                                        <option value="test">Test</option>
+                                    </select>
+                                </div>
+                                <div class="description">
+                                    <textarea name="content"><?=$post['content']?></textarea>
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                <div class="ui three buttons">
+                                    <button class="ui basic orange button" type="submit" name="sub" value="cancel">Cancel</button>
+                                    <button class="ui basic red button" type="submit" name="sub" value="delete">Delete</button>
+                                    <button class="ui basic green button" type="submit" name="sub" value="send">SEND</button>
+                                    
+                                </div>
+                            </div>
+                        </div>
                     
                     <input type="text" name="title" value="<?=$post['title']?>"/>
                     <div>

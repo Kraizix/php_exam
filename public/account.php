@@ -1,6 +1,7 @@
 <?php 
 require __DIR__.'/../src/bootstrap.php';
-require_once __DIR__ .'/../config/editprofile.php';
+include '../src/inc/common.php';
+require_once __DIR__ .'./Method/editprofile.php';
 include '../config/db.php';
 ?>
 <!DOCTYPE html>
@@ -30,6 +31,7 @@ if (isset($_SESSION['user'])){
         updateUser($_SESSION['id'],$_FILES['image'], $_POST['username'], $_POST['description'],$_POST['email'],$_POST['password'],$pdo);
     }
 ?>
+
     <?php if (isset($_GET['id'])){
         $queryString = "SELECT * FROM Users WHERE id = '" . $_GET['id']."'";
         $query = $pdo->prepare($queryString);

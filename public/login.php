@@ -9,7 +9,7 @@ if (isset($_POST['register'])){
     $user = $_POST['username'];
     $password = $_POST['password'];
     try{
-        $query = 'SELECT * FROM Users WHERE username="'.$user.'"';
+        $query = 'SELECT * FROM Users WHERE username="'.$user.'" && id>0';
         $results = $pdo->prepare($query);
         $results->execute();
 

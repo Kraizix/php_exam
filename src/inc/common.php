@@ -32,7 +32,7 @@
     <i class="user circle icon"></i>
         Profile
     </a>
-    <a class="item" href="adminPanel.php">
+    <a class="item" href="adminLogin.php">
     <i class="shield alternate icon"></i>
         Admin
     </a>

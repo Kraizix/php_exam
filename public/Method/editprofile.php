@@ -15,7 +15,7 @@
     }
     
     function getUserByID(int $userID, $pdo){
-        $queryString = "SELECT * FROM users WHERE id = " . $userID;
+        $queryString = "SELECT * FROM Users WHERE id = " . $userID;
         $query = $pdo->prepare($queryString);
         $query->execute();
         $user=$query->fetch();

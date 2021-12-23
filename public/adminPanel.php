@@ -70,7 +70,7 @@ if (!isset($_SESSION['user'])){
         <h2>All Users</h2>
         <?php
         //query all users
-        $queryString="SELECT * FROM users ORDER BY joinDate ASC";
+        $queryString="SELECT * FROM Users WHERE id>0 ORDER BY joinDate ASC";
         $query= $pdo->prepare($queryString);
         $query->execute();
         $users = $query->fetchAll();

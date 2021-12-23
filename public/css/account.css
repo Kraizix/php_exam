@@ -1,6 +1,7 @@
-.container {  display: grid;
+.container2 {  display: grid;
+  
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1.5fr 1.5fr 0.1fr;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
@@ -13,20 +14,32 @@
 
 .Favs { grid-area: Favs; }
 
-.User { grid-area: User; }
+.User { 
+  grid-area: User;
+  width:30vw;
+ }
 
 
-html, body , .container {
+html, body , .container2 {
   height: 100%;
   margin: 0;
 }
 
-div.Posts{
-    overflow-x: hidden;
-    overflow-y: auto;
-    margin:5px;
-                padding:5px;
-
+div.Posts,div.Favs{
+    height: 50vh;
+    width: 69vw;
 }
 
+.favscontent, .postscontent {
+  height: 40vh;
+  overflow-x: hidden;
+    overflow-y: auto;
+    margin:5px;
+    padding:5px;
+}
 
+img {
+  max-width: 100%;
+  height: auto;
+  width: auto\9; /* ie8 */
+}

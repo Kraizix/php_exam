@@ -7,17 +7,17 @@ if (isset($_POST)){
     
     $_SESSION['LastPage']="adminPanel.php";
     if (isset($_POST['deletePost'])){
-        header("Location:http://localhost:8080/Method/deletePost.php?id=".$_POST['deletePost']);
+        header("Location:Method/deletePost.php?id=".$_POST['deletePost']);
     }else if (isset($_POST['deleteUser'])){
-        header("Location:http://localhost:8080/Method/deleteUser.php?id=".$_POST['deleteUser']);
+        header("Location:Method/deleteUser.php?id=".$_POST['deleteUser']);
     }else if (isset($_POST['modifPost'])){
-        header("Location:http://localhost:8080/edit.php?id=".$_POST['modifPost']);
+        header("Location:edit.php?id=".$_POST['modifPost']);
     }
 }
 
 
 if (!isset($_SESSION['user'])){
-    header("Location: http://localhost:8080/login.php");
+    header("Location: login.php");
 }else if (!$_SESSION['admin']){
     ?>
         <h1>Vous n'avez rien à faire ici, SORTEZ !</h1>

@@ -26,7 +26,7 @@ include '../config/db.php';
             $posts=$results->fetchAll();
             foreach ($posts as $post){
             ?>
-                <a class="ui card" href="http://localhost:8080/details.php?id=<?= $post["id"] ?>">
+                <a class="ui card" href="details.php?id=<?= $post["id"] ?>">
                     <div class="ui raised link card">
                         <div class="content">
                             <div class="header"><?= $post['title'] ?></div>
@@ -61,7 +61,7 @@ include '../config/db.php';
 
                 foreach ($posts as $post){
             ?>
-            <a class="ui card" href="http://localhost:8080/details.php?id=<?= $post["id"] ?>">
+            <a class="ui card" href="details.php?id=<?= $post["id"] ?>">
                 <div class="ui raised link card">
                     <div class="content">
                         <div class="header"><?= $post['title'] ?></div>
@@ -134,7 +134,7 @@ include '../config/db.php';
                     } else {
                 foreach ($posts as $post) {
             ?>
-            <a class="ui card" href="http://localhost:8080/details.php?id=<?= $post["id"] ?>">
+            <a class="ui card" href="details.php?id=<?= $post["id"] ?>">
                 <div class="ui raised link card">
                     <div class="content">
                         <div class="header"><?= $post['title'] ?></div>
@@ -166,7 +166,7 @@ include '../config/db.php';
                     } else {
                 foreach ($posts as $post) {
             ?>
-            <a class="ui card" href="http://localhost:8080/details.php?id=<?= $post["id"] ?>">
+            <a class="ui card" href="details.php?id=<?= $post["id"] ?>">
                 <div class="ui raised link card">
                     <div class="content">
                         <div class="header"><?= $post['title'] ?></div>

@@ -1,0 +1,65 @@
+.container {  display: grid;
+    grid-template-columns: 0.5fr 1.5fr 1fr;
+    grid-template-rows: 1.5fr 1.5fr 0.1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "Posts Posts User"
+      "Favs Favs User"
+      ". . .";
+  }
+  
+  .Posts {  display: grid;
+    grid-template-columns: 0.6fr 1.4fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "Name2 Content2 Content2"
+      "Name2 Content2 Content2"
+      "Name2 Content2 Content2";
+    grid-area: Posts;
+  }
+  
+  .Name2 { grid-area: Name2; }
+  
+  .Content2 { grid-area: Content2; }
+  
+  .Favs {  display: grid;
+    grid-template-columns: 0.6fr 1.4fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "Name Content Content"
+      "Name Content Content"
+      "Name Content Content";
+    grid-area: Favs;
+  }
+  
+  .Name { grid-area: Name; }
+  
+  .Content { grid-area: Content; }
+  
+  .User { grid-area: User; }
+  
+  
+  
+  html, body , .container {
+    height: 100%;
+    margin: 0;
+  }
+  .Name,.Name2 { 
+      text-align: center;
+  }
+  .Content,.Content2 { 
+      background: red;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin:5px;
+    padding:5px;
+  }
+
+  .Favs,.Posts{
+    height: 50vh;
+  }

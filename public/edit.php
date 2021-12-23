@@ -31,29 +31,29 @@ if (isset($_POST['sub'])){
             if (isset($_SESSION['LastPage'])){
                 $destination = $_SESSION['LastPage'];
                 unset($_SESSION['LastPage']);
-                header('Location: http://localhost:8080/'.$destination);
+                header('Location: '.$destination);
             }else{
-                header('Location: http://localhost:8080/details.php?id='.$idPost);
+                header('Location: details.php?id='.$idPost);
             }
             break;
         case 'cancel':
             if (isset($_SESSION['LastPage'])){
                 $destination = $_SESSION['LastPage'];
                 unset($_SESSION['LastPage']);
-                header('Location: http://localhost:8080/'.$destination);
+                header('Location: '.$destination);
             }else{
-                header('Location: http://localhost:8080/details.php?id='.$idPost);
+                header('Location: details.php?id='.$idPost);
             }
             break;
         case 'delete':
             echo "delete";
             $_SESSION['LastPage'] = "home.php";
-            header("Location:http://localhost:8080/Method/deletePost.php?id=$idPost");
+            header("Location:Method/deletePost.php?id=$idPost");
             exit();
             break;
         case 'back':
             echo "here";
-            header("Location:http://localhost:8080/home.php");
+            header("Location:home.php");
             break;
 
     }

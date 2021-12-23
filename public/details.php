@@ -40,16 +40,16 @@ view('header', ['title' => 'Details'])
                 case 'delete':
                     echo "Delete";
                     $_SESSION['LastPage'] = "home.php";
-                    header("Location:http://localhost:8080/Method/deletePost.php?id=$idPost");
+                    header("Location:Method/deletePost.php?id=$idPost");
                     break;
                 case 'edit':
                     echo "Edit";
                     $_SESSION['LastPage']="details.php?id=$idPost";
-                    header("Location:http://localhost:8080/edit.php?id=$idPost");
+                    header("Location:edit.php?id=$idPost");
                     break;
                 case 'back':
                     echo "here";
-                    header("Location:http://localhost:8080/home.php");
+                    header("Location:home.php");
                     break;
             }
         }

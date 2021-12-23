@@ -3,7 +3,7 @@ require __DIR__.'/../src/bootstrap.php';
 include '../config/db.php';
 
 if(isset($_POST['login'])){
-    header("Location:http://localhost:8080/login.php");
+    header("Location:login.php");
 }else if (isset($_POST['username'])) {
     $data =$_POST;
     if (empty($data['username'])||

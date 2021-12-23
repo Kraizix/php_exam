@@ -11,89 +11,35 @@ include '../config/db.php';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/account.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
-        integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
-        integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Account</title>
 </head>
 <body>
 <?php 
 if (isset($_SESSION['user'])){
+    $id = isset($_GET["id"]) ? $_GET["id"] : $_SESSION["id"];
     if(isset($_FILES['image'])&& isset($_POST['username'])){
         updateUser($_SESSION['id'],$_FILES['image'], $_POST['username'], $_POST['description'],$_POST['email'],$_POST['password'],$pdo);
     }
 ?>
-
-    <?php if (isset($_GET['id'])){
-        $queryString = "SELECT * FROM Users WHERE id = '" . $_GET['id']."'";
+        <?php
+        $queryString = "SELECT * FROM Users WHERE id = '" .$id."'";
         $query = $pdo->prepare($queryString);
         $query->execute();
         $user=$query->fetch();
         $date = new DateTime($user['joinDate']);
         ?>
-            <div class="container">  
-            <div class="Posts">
-            <?php
-                $queryString="SELECT * FROM Articles WHERE UserId= '".$_SESSION['id']."'";
-                $results = $pdo->prepare($queryString);
-                $results->execute();
-                $posts=$results->fetchAll();
-                foreach ($posts as $post){
-                ?>
-                <div class="ui raised link card">
-                        <div class="content">
-                        <div class="header"><?= $post['title'] ?></div>
-                        <div class="meta">
-                            <?php
-                        $catArray = unserialize($post["category"]);
-                        foreach ($catArray as $category) { ?>
-                            <div class="ui label"><?= $category ?></div>
-                            <?php } ?>
-                        </div>
-                        <div class="description">
-                            <p><?= $post["content"]?></p>
-                        </div>
-                    </div>
-                    <div class="extra content">
-                        By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
-                    </div>
-                </div>
-                <?php } ?>
-            </div>
-            <div class="Favs">La y'a les favs mais tkt c'est bientot la</div>
-            <div class="User">
-                <div>
-                    <h1><?= $user['username']?></h1>
-                    <a>Inscrit depuis le <?= $date->format('d/m/Y')?></a>
-                    <h2><?= $user['description']?></h2>
-                    <img src="<?= $user['image']?>" alt="<?= $user['image']?>" height = "450px" width = "450px">
-                </div>
-            </div>
-    <?php } else {
-        $queryString = "SELECT * FROM Users WHERE username = '" . $_SESSION['user']."'";
-        $query = $pdo->prepare($queryString);
-        $query->execute();
-        $user=$query->fetch();
-        $date = new DateTime($user['joinDate']);
-        ?>
-            <div class="container">  
+            <div id="info"class="container2">
                 <div class="Posts">
+                    <h1>Posts :</h1>
+                    <div class="postscontent">
                 <?php
-                $queryString="SELECT * FROM Articles WHERE UserId= '".$_SESSION['id']."'";
+                $queryString="SELECT * FROM Articles WHERE userId= '".$id."'";
                 $results = $pdo->prepare($queryString);
                 $results->execute();
                 $posts=$results->fetchAll();
                 foreach ($posts as $post){
                 ?>
-                <div class="ui raised link card">
+                <div class="ui raised link card centered">
                         <div class="content">
                             <div class="header"><?= $post['title'] ?></div>
                             <div class="meta">
@@ -113,17 +59,58 @@ if (isset($_SESSION['user'])){
                     </div>
                     <?php } ?>
                 </div>
-                <div class="Favs">La y'a les favs mais tkt c'est bientot la</div>
+                </div>
+                <div class="Favs">
+                    <h1> Favs : </h1>
+                    <div class="favscontent">
+                    <?php
+                    $queryString="SELECT * FROM Favs WHERE userID= '".$id."'";
+                    $results = $pdo->prepare($queryString);
+                    $results->execute();
+                    $favs=$results->fetchAll();
+                    foreach ($favs as $fav){
+                        $queryString="SELECT * FROM Articles WHERE id= '".$fav['postID']."'";
+                        $results = $pdo->prepare($queryString);
+                        $results->execute();
+                        $post=$results->fetchAll()[0];
+                    ?>
+                    <div class="ui raised link card centered">
+                            <div class="content">
+                                <div class="header"><?= $post['title']  ?></div>
+                                <div class="meta">
+                                    <?php
+                                $catArray = unserialize($post["category"]);
+                                foreach ($catArray as $category) { ?>
+                                    <div class="ui label"><?= $category ?></div>
+                                    <?php } ?>
+                                </div>
+                                <div class="description">
+                                    <p><?= $post["content"]?></p>
+                                </div>
+                            </div>
+                            <div class="extra content">
+                                By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                            </div>
+                        </div>
+                        <?php } ?>
+                                </div>
+
+                </div>
                 <div class="User">
                     <div>
                         <h1><?= $user['username']?></h1>
                         <a>Inscrit depuis le <?= $date->format('d/m/Y')?></a>
                         <h2><?= $user['description']?></h2>
-                        <img src="<?= $user['image']?>" alt="<?= $user['image']?>" height = "450px" width = "450px">
+                        <img src="<?= $user['image']?>" alt="<?= $user['image']?>">
                     </div>
-                    <button type="button" onclick="show('edit','container')">Edit</button>
+                    <?php
+                    if ($id == $_SESSION['id']) { ?>
+                    <button type="button" onclick="show('edit','info')">Edit</button>
+                    <?php }?>
                 </div>
             </div>
+        <?php
+        if ($id == $_SESSION['id']) { ?>
         <div id="edit" style="display:none">
             <form action="account.php" method="POST" enctype="multipart/form-data">
                 <div>
@@ -149,9 +136,9 @@ if (isset($_SESSION['user'])){
                 <button type="submit">Confirm</button><br>
                 
             </form>
-            <button type="button" onClick="show('container','edit')">Cancel</button>
+            <button type="button" onclick="show('info','edit')">Cancel</button>
         </div>
-    <?php }?>
+        <?php } ?>
 <?php
 } else {
         ?>
@@ -164,9 +151,12 @@ if (isset($_SESSION['user'])){
     }?>
     <script>
         function show(shown,hidden){
-            document.getElementById(shown).style.display="block";
+            if (shown == "info"){
+                document.getElementById(shown).style.display="grid";
+            } else {
+                document.getElementById(shown).style.display="block";
+            }
             document.getElementById(hidden).style.display="none";
-            document.getElementById(hidden).hidden=false;
         }
     </script>
 </body>

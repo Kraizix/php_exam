@@ -7,7 +7,7 @@ include '../config/db.php';
  view('header', ['title' => 'New']) ;
 
 if (isset($_POST['sub'])){
-    header("Location:http://localhost:8080/home.php");
+    header("Location:home.php");
     exit();
 }
 ?>

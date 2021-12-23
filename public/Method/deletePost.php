@@ -28,8 +28,10 @@ if ($_SESSION['admin'] || ($_SESSION['id']==$userID)){
         $destination = $_SESSION['LastPage'];
         unset($_SESISON['LastPage']);
         header('Location: http://localhost:8080/'.$destination);
+        exit();
     }else{
         header('Location: http://localhost:8080/home.php');
+        exit();
     }
 }else{
     echo "Eh... T'es qui en fait?";

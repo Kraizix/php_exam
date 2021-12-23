@@ -5,25 +5,18 @@ include_once '../src/inc/common.php';
 
 $idPost = $_GET['id'];
 
-$queryString = "SELECT * FROM Articles WHERE id = " . $idPost;
-$query = $pdo->prepare($queryString);
-$query->execute();
-$post=$query->fetch();
-
-$categories= unserialize($post['category']);
-var_dump($categories);
+var_dump($_SESSION['LastPage']);
 if (isset($_POST['sub'])){
+    echo "here";
     switch ($_POST['sub']){
         case 'send':
             echo "SEND";
             
             //serialize category array to insert in db
-            $catArray = explode(',', $_POST['category']);
+            $catArray = $_POST['category'];
             $category = serialize($catArray);
 
             $queryString= 'UPDATE Articles SET title="'.$_POST['title'].'", content="'.$_POST['content'].'"'.", category='".$category."' WHERE id =".$idPost;
-
-            var_dump($data);
             $query= $pdo->prepare($queryString);
             $query->execute();
 
@@ -35,7 +28,6 @@ if (isset($_POST['sub'])){
                 $query= $pdo->prepare($queryString);
                 $query->execute($data);
             }
-            
             if (isset($_SESSION['LastPage'])){
                 $destination = $_SESSION['LastPage'];
                 unset($_SESSION['LastPage']);
@@ -55,7 +47,9 @@ if (isset($_POST['sub'])){
             break;
         case 'delete':
             echo "delete";
+            $_SESSION['LastPage'] = "home.php";
             header("Location:http://localhost:8080/Method/deletePost.php?id=$idPost");
+            exit();
             break;
         case 'back':
             echo "here";
@@ -64,6 +58,12 @@ if (isset($_POST['sub'])){
 
     }
 }
+
+
+$queryString = "SELECT * FROM Articles WHERE id = " . $idPost;
+$query = $pdo->prepare($queryString);
+$query->execute();
+$post=$query->fetch();
 
 ?>
 <!DOCTYPE html>
@@ -89,6 +89,7 @@ if (isset($_POST['sub'])){
                                 <div class="meta">
                                     <?php
                                     $catArray = unserialize($post["category"]);
+                                    var_dump($post["category"]);
                                     ?>
                                     <select name="category[]" class="ui selection dropdown" multiple="" id="multi-select">
                                         <option value="">Categories</option>    
@@ -112,25 +113,6 @@ if (isset($_POST['sub'])){
                                 </div>
                             </div>
                         </div>
-                    
-                    <input type="text" name="title" value="<?=$post['title']?>"/>
-                    <div>
-                        <textarea name="content"><?=$post['content']?></textarea>
-                    </div>
-                    <div>
-                        Current categories : <?php foreach($categories as $category){ echo $category; } ?>
-                        <select name="category" id="category">
-                            <option value="<?=$category?>">--Category--</option>
-                            <option value="informatique">Informatique</option>
-                            <option value="new">New</option>
-                            <option value="anime">Animé</option>
-                            <option value="event">Evènement</option>
-                            <option value="test">TEST</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" name="sub" value="send">SEND</button>
-                    <button type="submit" name="sub" value="delete">Delete</button>
 
                     <?php
                     }else{

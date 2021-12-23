@@ -60,28 +60,30 @@ if (isset($_POST['sub'])){
             <form method="POST">
                 <div>
                     <button type="submit" name="sub" value="back" >BACK</button>
+                    
                 </div>
                 <h1>Create Post</h1>
                 <div class="ui card centered" style="transform:scale(1); width:75%; margin-top:10%;">
                     <div class="content">
                         <div class="header">
                             <input type="text" name="title" id="title" placeholder="title ... ">
+                            <select name="category[]" class="ui selection dropdown" multiple="" id="multi-select">
+                                <option value="">Categories</option>    
+                                <option value="informatique">Informatique</option>
+                                <option value="new">New</option>
+                                <option value="anime">Anime</option>
+                                <option value="event">Event</option>
+                                <option value="test">Test</option>
+                            </select>
                         </div>
                         <div class="description">
-                            <textarea  name="content" id="content" rows="7" placeholder="Tell us what you want ... "></textarea>
+                            <textarea  name="content" id="content" rows="7" style="transform:scale(1); width:100%;" placeholder="Tell us what you want ... "></textarea>
                         </div>
                     </div>
-                    <div class="extra content">
-                        <select name="category[]" class="ui selection dropdown" multiple="" id="multi-select">
-                            <option value="">Categories</option>    
-                            <option value="informatique">Informatique</option>
-                            <option value="new">New</option>
-                            <option value="anime">Anime</option>
-                            <option value="event">Event</option>
-                            <option value="test">Test</option>
-                        </select>
-                        <i class="thumbtack icon" style="margin-left:20%;"></i>
-                        <input type="checkbox" name="pin" id="pin:"/>
+                    <div class="extra content ">
+                        
+                        <i class="thumbtack icon" style="transform:scale(2)"></i>
+                        <input type="checkbox" style="transform:scale(1)" name="pin" id="pin:"/>
 
                         <button type="submit" style="margin-left:90%;">Submit</button>
                     </div>

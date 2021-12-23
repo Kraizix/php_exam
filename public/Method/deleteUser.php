@@ -9,6 +9,11 @@ if ($_SESSION['admin']){
     $query= $pdo->prepare($queryString);
     $query->execute();
     $articles = $query->fetchAll();
+
+    $queryString= "DELETE FROM Favs WHERE userID=". $idUser;
+    $query= $pdo->prepare($queryString);
+    $query->execute();
+    
     foreach ($articles as $article){
         $queryString= "DELETE FROM Comments WHERE postID=". $article['id'];
         $query= $pdo->prepare($queryString);
@@ -19,9 +24,6 @@ if ($_SESSION['admin']){
         $query->execute();
     }
 
-    $queryString= "DELETE FROM Favs WHERE userID=". $idUser;
-    $query= $pdo->prepare($queryString);
-    $query->execute();
 
     $queryString= "DELETE FROM Users WHERE id=". $idUser;
     $query= $pdo->prepare($queryString);

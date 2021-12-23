@@ -53,8 +53,8 @@ include '../config/db.php';
 
             <?php
             //Tendances :
-                $favQuery = "SELECT Articles.id, title, content, image, category, date, Articles.userID, pinned, count(Favs.id) AS nbFavs
-                FROM Articles INNER JOIN Favs ON Articles.id = postID GROUP BY postID ORDER BY count(Favs.id) DESC LIMIT 4";
+                $favQuery = "SELECT Articles.id, title, content, Articles.image, category, date, Articles.userID, pinned, Users.image AS avatar,count(Favs.id) AS nbFavs
+                FROM Articles INNER JOIN Favs ON Articles.id = postID INNER JOIN Users on Users.id=Articles.userID GROUP BY postID ORDER BY count(Favs.id) DESC LIMIT 4";
                 $results = $pdo->prepare($favQuery);
                 $results->execute();
                 $posts = $results->fetchAll();
@@ -78,6 +78,7 @@ include '../config/db.php';
                     </div>
                     <div class="extra content">
                         <img class="ui avatar image" src="<?= $post["avatar"] ?>"> By <?= $post["username"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                        <?= $post["nbFavs"] ?>
                     </div>
                 </div>
             </a>

@@ -149,7 +149,7 @@ if (isset($_SESSION['user'])){
                 <button type="submit">Confirm</button><br>
                 
             </form>
-            <button type="button" onclick="show('container','edit')">Cancel</button>
+            <button type="button" onClick="show('container','edit')">Cancel</button>
         </div>
     <?php }?>
 <?php
@@ -166,6 +166,7 @@ if (isset($_SESSION['user'])){
         function show(shown,hidden){
             document.getElementById(shown).style.display="block";
             document.getElementById(hidden).style.display="none";
+            document.getElementById(hidden).hidden=false;
         }
     </script>
 </body>

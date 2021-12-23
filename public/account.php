@@ -31,7 +31,7 @@ if (isset($_SESSION['user'])){
             <div id="info"class="container2">
                 <div class="Posts">
                     <h1>Posts :</h1>
-                    <div class="postscontent">
+                    <div class="postscontent ">
                 <?php
                 $queryString="SELECT * FROM Articles WHERE userId= '".$id."'";
                 $results = $pdo->prepare($queryString);
@@ -39,6 +39,7 @@ if (isset($_SESSION['user'])){
                 $posts=$results->fetchAll();
                 foreach ($posts as $post){
                 ?>
+                <a class="ui card centered" href="details.php?id=<?= $post["id"] ?>">
                 <div class="ui raised link card centered">
                         <div class="content">
                             <div class="header"><?= $post['title'] ?></div>
@@ -57,6 +58,7 @@ if (isset($_SESSION['user'])){
                             By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
                         </div>
                     </div>
+                </a>
                     <?php } ?>
                 </div>
                 </div>
@@ -74,7 +76,9 @@ if (isset($_SESSION['user'])){
                         $results->execute();
                         $post=$results->fetchAll()[0];
                     ?>
-                    <div class="ui raised link card centered">
+                    
+                    <a class="ui card centered" href="details.php?id=<?= $post["id"] ?>">
+                        <div class="ui raised link card centered">
                             <div class="content">
                                 <div class="header"><?= $post['title']  ?></div>
                                 <div class="meta">
@@ -92,6 +96,7 @@ if (isset($_SESSION['user'])){
                                 By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
                             </div>
                         </div>
+                    </a>
                         <?php } ?>
                                 </div>
 

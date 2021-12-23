@@ -32,34 +32,38 @@ if (!isset($_SESSION['user'])){
         <h2>All Articles</h2>
         <?php
         // query all articles
-        $queryString="SELECT * FROM articles ORDER BY date ASC";
+        $queryString="SELECT Articles.id, title, content, Articles.image AS postImage, category, date, userID, pinned, username, Users.image AS avatar FROM Articles
+        INNER JOIN Users ON userID = Users.id ORDER BY date DESC LIMIT 4";
         $query= $pdo->prepare($queryString);
         $query->execute();
         $articles = $query->fetchAll();
         foreach($articles as $article){
             ?>
-            <div class="ui raised link card">
-                <div class="content">
-                    <div class="header"><?= $article['title'] ?></div>
-                    <div class="meta">
-                        <?php
-                        $catArray = unserialize($article["category"]);
-                        foreach ($catArray as $category) { ?>
-                        <div class="ui label"><?= $category ?></div>
-                        <?php } ?>
+            <a class="ui card" href="details.php?id=<?= $article["id"] ?>">
+                <div class="ui raised link card">
+                    <div class="content">
+                        <div class="header"><?= $article['title'] ?></div>
+                        <div class="meta">
+                            <?php
+                            $catArray = unserialize($article["category"]);
+                            foreach ($catArray as $category) { ?>
+                            <div class="ui label"><?= $category ?></div>
+                            <?php } ?>
+                        </div>
+                        <div class="description">
+                            <p><?= $article["content"]?></p>
+                        </div>
                     </div>
-                    <div class="description">
-                        <p><?= $article["content"]?></p>
+                    <div class="extra content">
+                        By <?= $article["username"]?> <img class="ui avatar image" src="<?= $article["avatar"] ?>"> -- <?= $article["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                    </div>
+                    <div class="ui buttons">           
+                        <button class="ui red button" type="submit" name="deletePost" value="<?=$article["id"]?>">Delete</button>
+                        <div class="ui or"></div>
+                        <button class="ui blue button" type="submit" name="modifPost" value="<?=$article["id"]?>">Edit</button>
                     </div>
                 </div>
-                <div class="extra content">
-                    By User_<?= $article["userID"] ?> -- <?= $article["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
-                </div>
-                <div>           
-                    <button type="submit" name="deletePost" value="<?=$article["id"]?>">Delete</button>
-                    <button type="submit" name="modifPost" value="<?=$article["id"]?>">Edit</button>
-                </div>
-            </div>
+            </a>
             
 
             <?php
@@ -76,28 +80,29 @@ if (!isset($_SESSION['user'])){
         $users = $query->fetchAll();
         foreach($users as $user){
     ?>
-            <div class="ui special cards">
-                <div class="card">
-                    <div class="blurring dimmable image">
-                    <div class="ui dimmer">
+            
+                <div class="ui special cards">
+                    <div class="card">
+                        <div class="blurring dimmable image">
+                        <div class="ui dimmer">
+                            <div class="content">
+                            <div class="center">
+                                <button class="ui inverted red button" type="submit" name="deleteUser" value="<?=$user["id"]?>">Kill him/her</button>
+                            </div>
+                            </div>
+                        </div>
+                        <img src="<?= $user["image"]?>">
+                        </div>
                         <div class="content">
-                        <div class="center">
-                            <button class="ui inverted button" type="submit" name="deleteUser" value="<?=$user["id"]?>">Kill him/her</button>
+                        <a class="header" href="account.php?id=<?= $user["id"] ?>"><?= $user["username"]?></a>
+                        <div class="meta">
+                            <span class="date">Join us on <?= $user["joinDate"]?></span>
                         </div>
                         </div>
-                    </div>
-                    <img src="<?= $user["image"]?>">
-                    </div>
-                    <div class="content">
-                    <a class="header"><?= $user["username"]?></a>
-                    <div class="meta">
-                        <span class="date">Join us on <?= $user["joinDate"]?></span>
-                    </div>
-                    </div>
-                    <div class="extra content">
+                        <div class="extra content">
+                        </div>
                     </div>
                 </div>
-            </div>
             <?php
         }
         ?>

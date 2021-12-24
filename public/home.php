@@ -53,7 +53,7 @@ include '../config/db.php';
 
             <?php
             //Tendances :
-                $favQuery = "SELECT Articles.id, title, content, Articles.image, category, date, Articles.userID, pinned, Users.image AS avatar,count(Favs.id) AS nbFavs
+                $favQuery = "SELECT Articles.id, title, content, Articles.image, category, date, username, Articles.userID, pinned, Users.image AS avatar,count(Favs.id) AS nbFavs
                 FROM Articles INNER JOIN Favs ON Articles.id = postID INNER JOIN Users on Users.id=Articles.userID GROUP BY postID ORDER BY count(Favs.id) DESC LIMIT 4";
                 $results = $pdo->prepare($favQuery);
                 $results->execute();
@@ -109,8 +109,9 @@ include '../config/db.php';
 
             <?php
                 if (isset($_GET['q']) && $_GET['q'] != "") {
-                    if ($_GET['category'] != "") {
-                        $squery = "SELECT * FROM Articles WHERE (category = :category AND title LIKE :query) OR (category = :category AND content LIKE :query)";
+                    if (isset($_GET['category'])) {
+                        $squery = "SELECT Articles.id, title, content, Articles.image AS postImage, category, date, userID, pinned, username, Users.image AS avatar
+                        FROM Articles INNER JOIN Users ON userID = Users.id WHERE (category = :category AND title LIKE :query) OR (category = :category AND content LIKE :query)";
                         print_r($_GET['category']);
                         $catArray = $_GET['category'];
                         $category = serialize($catArray);
@@ -120,7 +121,8 @@ include '../config/db.php';
                             "category" => $category,
                         ];
                     } else {
-                        $squery = "SELECT * FROM Articles WHERE title LIKE :query OR content LIKE :query";
+                        $squery = "SELECT Articles.id, title, content, Articles.image AS postImage, category, date, userID, pinned, username, Users.image AS avatar
+                        FROM Articles INNER JOIN Users ON userID = Users.id WHERE title LIKE :query OR content LIKE :query";
 
                         $datas = [
                             "query" => "%".$_GET["q"]."%",
@@ -157,7 +159,8 @@ include '../config/db.php';
             <?php       }
                     }
                 } else {
-                 $squery = "SELECT * FROM Articles";
+                 $squery = "SELECT Articles.id, title, content, Articles.image AS postImage, category, date, userID, pinned, username, Users.image AS avatar
+                FROM Articles INNER JOIN Users ON userID = Users.id";
                     $results = $pdo->prepare($squery);
                     $results->execute();
                     $posts = $results->fetchAll();

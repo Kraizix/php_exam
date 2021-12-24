@@ -1,7 +1,7 @@
 <?php 
 require __DIR__.'/../src/bootstrap.php';
 include '../src/inc/common.php';
-require_once __DIR__ .'./Method/editprofile.php';
+require_once __DIR__ .'/Method/editprofile.php';
 include '../config/db.php';
 ?>
 <!DOCTYPE html>

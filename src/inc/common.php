@@ -36,6 +36,10 @@
     <i class="shield alternate icon"></i>
         Admin
     </a>
+    <a class="item" href="./Method/logout.php">
+    <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
+        Disconnect
+    </a>
 </div>
 
 <script type="text/javascript">

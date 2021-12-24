@@ -15,7 +15,7 @@ view('header', ['title' => 'Details'])
         
         $idPost = $_GET['id'];
 
-        $queryString = "SELECT Articles.id, title, content, Articles.image, category, date, Articles.userID, pinned, Users.image AS avatar, Users.username FROM articles
+        $queryString = "SELECT Articles.id, title, content, Articles.image AS postImage, category, date, Articles.userID, pinned, Users.image AS avatar, Users.username FROM Articles
         INNER JOIN Users ON Articles.userID=Users.id WHERE Articles.id = " . $idPost;
         $query = $pdo->prepare($queryString);
         $query->execute();
@@ -96,6 +96,7 @@ view('header', ['title' => 'Details'])
                             </div>
                             <div class="description">
                                 <p><?= $post["content"]?></p>
+                                <div><img style="max-width: 100px; max-height: 100px" src="<?= $post["postImage"]?>"/></div>
                             </div>
                         </div>
                         <div class="extra content">

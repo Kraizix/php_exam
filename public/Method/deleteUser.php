@@ -19,6 +19,10 @@ if ($_SESSION['admin']){
         $query= $pdo->prepare($queryString);
         $query->execute();
 
+        $queryString= "DELETE FROM Comments WHERE userID=". $idUser;
+        $query= $pdo->prepare($queryString);
+        $query->execute();
+
         $queryString= "DELETE FROM Articles WHERE id=". $article['id'];
         $query= $pdo->prepare($queryString);
         $query->execute();

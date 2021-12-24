@@ -67,7 +67,7 @@ view('header', ['title' => 'Details'])
                         "content" => $commentText,
                         "date" => date("Y-m-d H:i:s"),
                         "postID" => $idPost,
-                        "userID" => $post['userID'],
+                        "userID" => $_SESSION['id'],
                     ];
                     $queryString = "INSERT INTO Comments (content, date, postID, userID) VALUES (:content, :date, :postID, :userID)";
                     $query = $pdo->prepare($queryString);

@@ -15,7 +15,17 @@ view('header', ['title' => 'Details'])
         
         $idPost = $_GET['id'];
 
+        $queryString = "SELECT Articles.id, title, content, Articles.image, category, date, Articles.userID, pinned, Users.image AS avatar, Users.username FROM articles
+        INNER JOIN Users ON Articles.userID=Users.id WHERE Articles.id = " . $idPost;
+        $query = $pdo->prepare($queryString);
+        $query->execute();
+        $post=$query->fetch();
+
+        $commentText = "Express your self";
         if (isset($_POST['sub'])){
+            if (isset($_POST['comment'])){
+                $commentText = $_POST['comment'];
+            }
             switch ($_POST['sub']){ 
                 case 'favori-add':
                     echo "This post is now amoung your Favorites";
@@ -51,15 +61,25 @@ view('header', ['title' => 'Details'])
                     echo "here";
                     header("Location:home.php");
                     break;
+                case "reply":
+                    echo "Reply";
+                    $data = [
+                        "content" => $commentText,
+                        "date" => date("Y-m-d H:i:s"),
+                        "postID" => $idPost,
+                        "userID" => $post['userID'],
+                    ];
+                    $queryString = "INSERT INTO Comments (content, date, postID, userID) VALUES (:content, :date, :postID, :userID)";
+                    $query = $pdo->prepare($queryString);
+                    $query->execute($data);
+
+                    $commentText = "Express your self";
+
             }
         }
 
         if (isset($_SESSION['user'])){
-            $queryString = "SELECT Articles.id, title, content, Articles.image, category, date, Articles.userID, pinned, Users.image AS avatar, Users.username FROM articles
-                            INNER JOIN Users ON Articles.userID=Users.id WHERE Articles.id = " . $idPost;
-            $query = $pdo->prepare($queryString);
-            $query->execute();
-            $post=$query->fetch();
+
             ?>
 
             <form method="POST">
@@ -128,30 +148,45 @@ view('header', ['title' => 'Details'])
                 <div class="Comments">
                         <div class="ui threaded Comments " >
                         <h3 class="ui dividing header">Comments</h3>
-                        <form class="ui reply form">
                             <div class="field">
-                                <textarea name="comment"></textarea>
-                                <button type=submit class="ui blue labeled submit icon button">
-                                <i class="icon edit"></i> Add Reply
+                                <textarea name="comment" ><?= $commentText?></textarea>
+                                <button type="submit" name="sub" value="reply" class="ui blue labeled submit icon button">
+                                    <i class="icon edit"></i> Add Reply
                                 </button>
                             </div>
-                        </form>
-                        <div class="comment">
-                            <a class="avatar">
-                            <img src="/images/avatar/small/matt.jpg">
-                            </a>
-                            <div class="content">
-                            <a class="author">Matt</a>
-                            <div class="metadata">
-                                <span class="date">Today at 5:42PM</span>
-                            </div>
-                            <div class="text">
-                                How artistic!
-                            </div>
-                            <div class="actions">
-                                <a class="reply">Reply</a>
-                            </div>
-                        </div>
+                        <?php 
+                            $queryString = "SELECT * FROM Comments WHERE postID = ". $idPost;
+                            $query = $pdo->prepare($queryString);
+                            $query->execute();
+                            $comments=$query->fetchAll();
+                            foreach ($comments as $comment){
+                                $queryString = "SELECT username, image FROM Users WHERE id = ".$comment['userID'];
+                                $query = $pdo->prepare($queryString);
+                                $query->execute();
+                                $commentUser = $query->fetch();
+
+                                $originalDate = date("Y-m-d H:i:s");
+                                $timestamp = strtotime($originalDate); 
+                                $hour = date("H:i", $timestamp );
+                                $day = date("d/m/Y", $timestamp);
+                                ?>
+
+                                <div class="comment">  
+                                    <div class="content">
+                                        <img class="ui avatar image" src="<?= $commentUser['image'] ?>">
+                                        <a class="author" href="/account.php?id=<?=$comment['userID']?>"><?= $commentUser['username'] ?></a>
+                                        
+                                            <span class="date"><?= "At ".$hour." on the ".$day?></span>
+                                    </div>
+                                        
+                                        <div class="text">
+                                            <?= $comment['content'] ?>
+                                        </div>
+                                </div>
+                                <?php
+                            }
+                        ?>
+                            
                     </div>
                     <div>
                         <button type="submit" name="sub" value="back" >BACK</button>

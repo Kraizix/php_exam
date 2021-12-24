@@ -30,3 +30,8 @@ body,
     height: 100%;
     margin: 0;
 }
+
+span.date{
+    font-size: 75%;
+    color: #78797E;
+}

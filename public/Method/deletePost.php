@@ -26,11 +26,11 @@ if ($_SESSION['admin'] || ($_SESSION['id']==$userID)){
 
     if (isset($_SESSION['LastPage'])){
         $destination = $_SESSION['LastPage'];
-        unset($_SESISON['LastPage']);
-        header('Location: http://localhost:8080/'.$destination);
+        unset($_SESSSON['LastPage']);
+        header('Location: ../'.$destination);
         exit();
     }else{
-        header('Location: http://localhost:8080/home.php');
+        header('Location: ../home.php');
         exit();
     }
 }else{

@@ -20,7 +20,6 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         $hash = $admin["pass"];
         if ( $user == $admin["username"] && password_verify($password,$hash)){
             echo "Login successful!";
-            session_start(); 
             $_SESSION['admin'] = true;
             header("Location: adminPanel.php");
             die();

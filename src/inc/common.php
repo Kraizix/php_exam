@@ -58,6 +58,6 @@
 
 <?php
     if (!isset($_SESSION['user'])){
-        header('Location: http://localhost:8080/login.php');
+        header('Location: /login.php');
     }
 ?>

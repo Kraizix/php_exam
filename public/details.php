@@ -25,10 +25,7 @@ view('header', ['title' => 'Details'])
         if (isset($_POST['sub'])){
             if (isset($_POST['comment'])){
                 $commentText = $_POST['comment'];
-                if ($commentText ==""){
-                    header("Location:details.php?id=$idPost");
-                    exit;
-                }
+                
             }
             switch ($_POST['sub']){ 
                 case 'favori-add':
@@ -66,6 +63,10 @@ view('header', ['title' => 'Details'])
                     header("Location:home.php");
                     break;
                 case "reply":
+                    if ($commentText ==""){
+                        header("Location:details.php?id=$idPost");
+                        exit;
+                    }
                     echo "Reply";
                     $data = [
                         "content" => $commentText,

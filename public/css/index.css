@@ -14,14 +14,22 @@
 
 .new {
     grid-area: new;
+    margin-left: 30%;
+    margin-right: 30%;
 }
 
 .trend {
     grid-area: trend;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 30%;
+    margin-right: 30%;
 }
 
 .search-posts {
     grid-area: search-posts;
+    margin-left: 30%;
+    margin-right: 30%;
 }
 
 html,
@@ -31,7 +39,7 @@ body,
     margin: 0;
 }
 
-span.date{
+span.date {
     font-size: 75%;
     color: #78797E;
 }

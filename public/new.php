@@ -20,6 +20,7 @@ if (isset($_POST['sub'])){
             $title = $_POST['title'];
             $content = $_POST['content'];
             $pin= $_POST['pin'] ?? 0;
+            var_dump((int)$pin);
             try{
                 //serialize category array to insert in db
                 var_dump($_POST['category']);
@@ -35,7 +36,7 @@ if (isset($_POST['sub'])){
                 // insert
                 $date = date("Y-m-d");
                 $userID = $_SESSION['id'];
-                $pinned = (bool) $pin;
+                $pinned = (int)$pin;
                 $queryString = 'INSERT INTO Articles (title, content, image, category,date, userID, pinned) VALUES (:title, :content, :image, :category, :date, :userID, :pinned)';
                 $data = [
                     "title" => $title, 

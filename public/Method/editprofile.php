@@ -59,7 +59,7 @@
         }
         //echo "";
         //echo $username,$password,$desc,$email,$fname;
-        $queryString = "UPDATE users SET username = '$username', mail = '$email', pass = '$password', image = '$fname', description = '$desc' WHERE id='$id'";
+        $queryString = "UPDATE Users SET username = '$username', mail = '$email', pass = '$password', image = '$fname', description = '$desc' WHERE id='$id'";
         //echo($queryString);
         $query = $pdo->prepare($queryString);
         $query->execute();

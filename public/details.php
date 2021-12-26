@@ -150,7 +150,7 @@ view('header', ['title' => 'Details'])
                         <div class="ui threaded Comments " >
                         <h3 class="ui dividing header">Comments</h3>
                             <div class="field">
-                                <textarea name="comment" ><?= $commentText?></textarea>
+                                <textarea name="comment" placeholder="<?= $commentText?>"></textarea>
                                 <button type="submit" name="sub" value="reply" class="ui blue labeled submit icon button">
                                     <i class="icon edit"></i> Add Reply
                                 </button>

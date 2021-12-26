@@ -16,7 +16,7 @@ if (isset($_POST['sub'])){
 
 <body>
     <?php
-        if (isset($_POST['title']) && isset($_POST['content'])) {
+        if (isset($_POST['title']) && isset($_POST['content']) && $_POST['title'] != NULL && $_POST['content'] != NULL && $_POST['category'] != NULL) {
             $title = $_POST['title'];
             $content = $_POST['content'];
             $pin= $_POST['pin'] ?? 0;
@@ -67,7 +67,7 @@ if (isset($_POST['sub'])){
             }
         }else{
             ?>
-    <label>Required Title and Content please</label>
+    <label>Required Title, Content and Category please</label>
     <?php 
         }
         if (isset($_SESSION['user'])){?>

@@ -5,8 +5,8 @@ include_once '../src/inc/common.php';
 
 $idPost = $_GET['id'];
 
-var_dump($_SESSION['LastPage']);
-if (isset($_POST['sub'])){
+var_dump($_POST['category']);
+if (isset($_POST['sub']) && $_POST['category'] == [] && $_POST['category'] == NULL){
     echo "here";
     switch ($_POST['sub']){
         case 'send':

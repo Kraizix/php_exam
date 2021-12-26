@@ -5,7 +5,6 @@ include_once '../src/inc/common.php';
 
 $idPost = $_GET['id'];
 
-var_dump($_POST['category']);
 if (isset($_POST['sub']) && $_POST['category'] != [] && $_POST['category'] != NULL){
     echo "here";
     switch ($_POST['sub']){
@@ -92,7 +91,6 @@ $post=$query->fetch();
                                 <div class="meta">
                                     <?php
                                     $catArray = unserialize($post["category"]);
-                                    var_dump($post["category"]);
                                     ?>
                                     <select name="category[]" class="ui selection dropdown" multiple="" id="multi-select">
                                         <option value="">Categories</option>    

@@ -17,6 +17,12 @@ if(isset($_POST['login'])){
     $user = $data['username'];
     $password = $data['password'];
     $password2 = $data['password2'];
+    if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $user))
+        {
+            $_SESSION['error'] = 'Invalid username';
+            header("Location:register.php");
+            exit;
+        }
     if ($password != $password2) {
         $_SESSION['error'] = 'Password mismatch';
         header("Location:register.php");

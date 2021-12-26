@@ -20,12 +20,9 @@ if (isset($_POST['sub'])){
             $title = $_POST['title'];
             $content = $_POST['content'];
             $pin= $_POST['pin'] ?? 0;
-            var_dump((int)$pin);
             try{
                 //serialize category array to insert in db
-                var_dump($_POST['category']);
                 $category = serialize($_POST['category']);
-                var_dump($category);
                 //Uploaded image data
                 $img = NULL;
 
@@ -43,7 +40,6 @@ if (isset($_POST['sub'])){
                     "userID" => $userID,
                     "pinned" => $pinned
                 ];
-                var_dump($data["category"]);
                 $query = $pdo->prepare($queryString);
                 $query->execute($data);
 

@@ -16,7 +16,6 @@ include '../config/db.php';
             <img class="ui fluid image" style="object-fit: cover; position: inherit;"
                 src="./content/banner/banner.jpg"></img>
             <!-- Site content !-->
-            <?= var_dump($_SESSION['admin']);?>
         </div>
     </div>
     <div class="new">

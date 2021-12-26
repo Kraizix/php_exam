@@ -18,6 +18,11 @@ include '../config/db.php';
 if (isset($_SESSION['user'])){
     $id = isset($_GET["id"]) ? $_GET["id"] : $_SESSION["id"];
     if(isset($_FILES['image'])&& isset($_POST['username'])){
+        if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $_POST['username']))
+        {
+            header('Location:account.php');
+            exit;
+        }
         updateUser($_SESSION['id'],$_FILES['image'], $_POST['username'], $_POST['description'],$_POST['email'],$_POST['password'],$pdo);
     }
 ?>

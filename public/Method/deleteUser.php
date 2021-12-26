@@ -15,6 +15,11 @@ if ($_SESSION['admin']){
     $query->execute();
     
     foreach ($articles as $article){
+        try{
+            deleteTree("../content/posts/".$article['id']);
+        } catch(PDOException $e){
+            
+        }
         $queryString= "DELETE FROM Comments WHERE postID=". $article['id'];
         $query= $pdo->prepare($queryString);
         $query->execute();
@@ -39,8 +44,9 @@ if ($_SESSION['admin']){
         unset($_SESSION['admin']);
         unset($_SESSION['LastPage']);
     }
-
-    deleteTree("../content/".$idUser);
+    try{
+        deleteTree("../content/users/".$idUser);
+    } catch(Exception $e){}
     
     if (isset($_SESSION['LastPage'])){
         $destination = $_SESSION['LastPage'];

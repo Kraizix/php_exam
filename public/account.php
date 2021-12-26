@@ -33,32 +33,37 @@ if (isset($_SESSION['user'])){
                     <h1>Posts :</h1>
                     <div class="postscontent ">
                 <?php
-                $queryString="SELECT * FROM Articles WHERE userId= '".$id."'";
+                $queryString="SELECT Articles.id, title, content, Articles.image AS postImage, category, date, userID, pinned, username, Users.image AS avatar FROM Articles
+                INNER JOIN Users ON userID = Users.id WHERE Users.id = '$id'";
                 $results = $pdo->prepare($queryString);
                 $results->execute();
                 $posts=$results->fetchAll();
                 foreach ($posts as $post){
                 ?>
-                <a class="ui card centered" href="details.php?id=<?= $post["id"] ?>">
-                <div class="ui raised link card centered">
-                        <div class="content">
-                            <div class="header"><?= $post['title'] ?></div>
-                            <div class="meta">
-                                <?php
-                            $catArray = unserialize($post["category"]);
-                            foreach ($catArray as $category) { ?>
-                                <div class="ui label"><?= $category ?></div>
-                                <?php } ?>
+                <div class="eight wide column">
+                    <a class="ui card centered" href="details.php?id=<?= $post["id"] ?>">
+                        <div class="ui raised link card">
+                            <div class="content">
+                                <div class="header"><?= $post['title'] ?></div>
+                                <div class="meta">
+                                    <?php
+                        $catArray = unserialize($post["category"]);
+                        foreach ($catArray as $category) { ?>
+                                    <div class="ui label"><?= $category ?></div>
+                                    <?php } ?>
+                                </div>
+                                <div class="description">
+                                    <p><?= $post["content"]?></p>
+                                </div>
                             </div>
-                            <div class="description">
-                                <p><?= $post["content"]?></p>
+                            <div class="extra content">
+                                <img class="ui avatar image" src="<?= $post["avatar"] ?>"> By <?= $post["username"] ?>
+                                --
+                                <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
                             </div>
                         </div>
-                        <div class="extra content">
-                            By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
-                        </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
                     <?php } ?>
                 </div>
                 </div>
@@ -71,20 +76,21 @@ if (isset($_SESSION['user'])){
                     $results->execute();
                     $favs=$results->fetchAll();
                     foreach ($favs as $fav){
-                        $queryString="SELECT * FROM Articles WHERE id= '".$fav['postID']."'";
+                        $queryString="SELECT Articles.id, title, content, Articles.image AS postImage, category, date, userID, pinned, username, Users.image AS avatar FROM Articles INNER JOIN Users ON userID = Users.id WHERE Articles.id = '".$fav['postID']."'";
                         $results = $pdo->prepare($queryString);
                         $results->execute();
                         $post=$results->fetchAll()[0];
                     ?>
                     
+                    <div class="eight wide column">
                     <a class="ui card centered" href="details.php?id=<?= $post["id"] ?>">
-                        <div class="ui raised link card centered">
+                        <div class="ui raised link card">
                             <div class="content">
-                                <div class="header"><?= $post['title']  ?></div>
+                                <div class="header"><?= $post['title'] ?></div>
                                 <div class="meta">
                                     <?php
-                                $catArray = unserialize($post["category"]);
-                                foreach ($catArray as $category) { ?>
+                        $catArray = unserialize($post["category"]);
+                        foreach ($catArray as $category) { ?>
                                     <div class="ui label"><?= $category ?></div>
                                     <?php } ?>
                                 </div>
@@ -93,10 +99,13 @@ if (isset($_SESSION['user'])){
                                 </div>
                             </div>
                             <div class="extra content">
-                                By User_<?= $post["userID"] ?> -- <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
+                                <img class="ui avatar image" src="<?= $post["avatar"] ?>"> By <?= $post["username"] ?>
+                                --
+                                <?= $post["pinned"] == 1 ? "Pinned" : "Not Pinned" ?>
                             </div>
                         </div>
                     </a>
+                </div>
                         <?php } ?>
                                 </div>
 

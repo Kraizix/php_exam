@@ -28,10 +28,6 @@ if (isset($_POST['sub'])){
                 var_dump($category);
                 //Uploaded image data
                 $img = NULL;
-                if (isset($_FILES['image'])) {
-                    $img = getImgDirectory($_SESSION['id'], $_FILES['image'], $pdo);
-                    print_r($img);
-                }
 
                 // insert
                 $date = date("Y-m-d");
@@ -56,6 +52,13 @@ if (isset($_POST['sub'])){
                 $query->execute();
                 $idPost=$query->fetch();
                 $idPost=$idPost[0];
+                if (isset($_FILES['image'])) {
+                    $img = getImgDirectory($idPost, $_FILES['image'], $pdo);
+                    print_r($img);
+                    $queryString = "UPDATE Articles SET image = '$img' WHERE id ='$idPost'";
+                    $query = $pdo->prepare($queryString);
+                    $query->execute();
+                }
 
                 header("Location:./details.php?id=$idPost");
             }catch (Exception $e) {

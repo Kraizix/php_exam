@@ -30,15 +30,15 @@
             $fname = $user['image'];
         } else {
             try{
-                rrmdir('./content/'.$_SESSION['id'].'/');
+                rrmdir('./content/posts/'.$id.'/');
             } catch(Exception $e){
                 //echo $e;
             }
-            mkdir('./content/'.$_SESSION['id'].'/');
+            mkdir('./content/posts/'.$id.'/');
             $tmpName = $file['tmp_name'];
             $name = $file['name'];
-            move_uploaded_file($tmpName,'./content/'.$_SESSION['id'].'/'.$name);
-            $fname='./content/'.$_SESSION['id'].'/'.$name;
+            move_uploaded_file($tmpName,'./content/posts/'.$id.'/'.$name);
+            $fname='./content/posts/'.$id.'/'.$name;
         }
         return $fname;
     }

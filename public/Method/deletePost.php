@@ -1,6 +1,17 @@
 <?php
 require "../../config/db.php";
 session_start();
+function deleteTree($dir){
+    foreach(glob($dir . "/*") as $element) {
+        if(is_dir($element)){
+            deleteTree($element); // On rappel la fonction deleteTree           
+            rmdir($element); // Une fois le dossier courant vidé, on le supprime
+        } else { // Sinon c'est un fichier, on le supprime
+            unlink($element);
+        }
+    }
+    rmdir($dir);
+}
 
 $idPost= $_GET['id'];
 
@@ -24,6 +35,9 @@ if ($_SESSION['admin'] || ($_SESSION['id']==$userID)){
     $query= $pdo->prepare($queryString);
     $query->execute();
 
+    try {
+        deleteTree("../content/posts/".$idPost);
+    } catch (PDOException $e) {}
     if (isset($_SESSION['LastPage'])){
         $destination = $_SESSION['LastPage'];
         unset($_SESSSON['LastPage']);

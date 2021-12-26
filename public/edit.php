@@ -11,12 +11,15 @@ if (isset($_POST['sub']) && $_POST['category'] != [] && $_POST['category'] != NU
     switch ($_POST['sub']){
         case 'send':
             echo "SEND";
-            
+            if ($_POST['title'] == "" || $_POST['content'] == "") {
+                header('Location: edit.php?id='.$idPost);
+                exit;
+            }
             //serialize category array to insert in db
             $catArray = $_POST['category'];
             $category = serialize($catArray);
 
-            $queryString= 'UPDATE Articles SET title="'.$_POST['title'].'", content="'.$_POST['content'].'"'.", category='".$category."' WHERE id =".$idPost;
+            $queryString= 'UPDATE Articles SET title="'.addslashes($_POST['title']).'", content="'.addslashes($_POST['content']).'"'.", category='".$category."' WHERE id =".$idPost;
             $query= $pdo->prepare($queryString);
             $query->execute();
 
@@ -84,7 +87,7 @@ $post=$query->fetch();
                         <div class="ui card centered" style="transform:scale(1.5); margin-top:10%;">
                             <div class="content">
                                 <div class="header">
-                                    <input type="text" name="title" value="<?=$post['title']?>"/>
+                                    <input type="text" name="title" value="<?=$post['title']?>" maxlength="255"/>
                                 </div>
                                 <div class="meta">
                                     <?php

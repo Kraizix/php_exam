@@ -40,7 +40,6 @@ if (isset($_SESSION['user'])){
                 $posts=$results->fetchAll();
                 foreach ($posts as $post){
                 ?>
-                <div class="eight wide column">
                     <a class="ui card centered" href="details.php?id=<?= $post["id"] ?>">
                         <div class="ui raised link card">
                             <div class="content">
@@ -63,7 +62,6 @@ if (isset($_SESSION['user'])){
                             </div>
                         </div>
                     </a>
-                </div>
                     <?php } ?>
                 </div>
                 </div>
@@ -82,7 +80,6 @@ if (isset($_SESSION['user'])){
                         $post=$results->fetchAll()[0];
                     ?>
                     
-                    <div class="eight wide column">
                     <a class="ui card centered" href="details.php?id=<?= $post["id"] ?>">
                         <div class="ui raised link card">
                             <div class="content">
@@ -105,7 +102,6 @@ if (isset($_SESSION['user'])){
                             </div>
                         </div>
                     </a>
-                </div>
                         <?php } ?>
                                 </div>
 
@@ -129,7 +125,7 @@ if (isset($_SESSION['user'])){
             <form action="account.php" method="POST" enctype="multipart/form-data">
                 <div>
                     <label for="username">Username : </label>
-                    <input type="text" name="username" id="username" placeholder="username ... ">
+                    <input type="text" name="username" id="username" placeholder="username ... " maxlength="20">
                 </div>
                 <div>
                     <label for="descrition">Descrition : </label>
@@ -137,11 +133,11 @@ if (isset($_SESSION['user'])){
                 </div>
                 <div>
                     <label for="email">Email : </label>
-                    <input type="email" name="email" id="email" placeholder="email ... ">
+                    <input type="email" name="email" id="email" placeholder="email ... " maxlength="255">
                 </div>
                 <div>
                     <label for="password">Password : </label>
-                    <input type="password" name="password" id="password" placeholder="password ... ">
+                    <input type="password" name="password" id="password" placeholder="password ... " maxlength="255">
                 </div>
                 <div>
                     <label for="image">Profile Picture : </label>

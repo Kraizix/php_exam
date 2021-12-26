@@ -10,13 +10,17 @@ if(isset($_POST['login'])){
         empty($data['password'])||
         empty($data['password2'])||
         empty($data['email'])) {
-        die('Please fill all required fields');
+        $_SESSION['error'] ='Please fill all required fields';
+        header("Location:register.php");
+        exit;
     }
     $user = $data['username'];
     $password = $data['password'];
     $password2 = $data['password2'];
     if ($password != $password2) {
-        die('Password mismatch');
+        $_SESSION['error'] = 'Password mismatch';
+        header("Location:register.php");
+        exit;
     }
     $email = $data['email'];
     $image = "./content/default/default.png";
@@ -24,6 +28,21 @@ if(isset($_POST['login'])){
     $options = [
         'cost' => 12,
     ];
+
+    $result = $pdo->prepare("SELECT * from Users WHERE username = '$user'");
+    $result->execute();
+    if ($result->rowCount() != 0) {
+        $_SESSION['error'] = "Username already taken";
+        header("Location:register.php");
+        exit;
+    }
+    $result = $pdo->prepare("SELECT * from Users WHERE mail = '$email'");
+    $result->execute();
+    if ($result->rowCount() != 0) {
+        $_SESSION['error'] = "Email already taken";
+        header("Location:register.php");
+        exit;
+    }
     
     try {
         $hash = password_hash($password,PASSWORD_BCRYPT,$options);
@@ -54,20 +73,25 @@ if(isset($_POST['login'])){
         <h1>Register Page</h1>
         <div>
             <label for="username">Username:</label>
-            <input type="text" name="username" id="username">
+            <input type="text" name="username" id="username" maxlength="20">
         </div>
         <div>
             <label for="email">Email:</label>
-            <input type="email" name="email" id="email">
+            <input type="email" name="email" id="email" maxlength="255">
         </div>
         <div>
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password">
+            <input type="password" name="password" id="password" maxlength="255">
         </div>
         <div>
             <label for="password2">Confirm Password:</label>
-            <input type="password" name="password2" id="password2">
+            <input type="password" name="password2" id="password2" maxlength="255">
         </div>
+        <?php if (isset($_SESSION['error'])) { ?>
+            <a> <?= $_SESSION['error'] ?> </a>
+        <?php 
+            unset($_SESSION['error']);
+        }?>
         <button type="submit">Register</button>
         <a href="login.php">I already have an account</a>
     </form>

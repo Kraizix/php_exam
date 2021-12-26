@@ -44,11 +44,11 @@ if (isset($_POST['register'])){
         <h1>Login Page</h1>
         <div>
             <label for="username">Username:</label>
-            <input type="text" name="username" id="username">
+            <input type="text" name="username" id="username" maxlength="20">
         </div>
         <div>
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password">
+            <input type="password" name="password" id="password" maxlength="255">
         </div>
         <button type="submit">Login</button>
         <a href ="register.php">

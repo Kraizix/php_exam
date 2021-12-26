@@ -40,11 +40,11 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         <h1>Login Admin</h1>
         <div>
             <label for="username">Username:</label>
-            <input type="text" name="username" id="username">
+            <input type="text" name="username" id="username" maxlength="20">
         </div>
         <div>
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password">
+            <input type="password" name="password" id="password" maxlength="255">
         </div>
         <button type="submit">Upgrade</button>
     </form>

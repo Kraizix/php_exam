@@ -79,7 +79,7 @@ if (isset($_POST['sub'])){
         <div class="ui card centered" style="transform:scale(1); width:75%; margin-top:10%;">
             <div class="content">
                 <div class="header">
-                    <input type="text" name="title" id="title" placeholder="title ... ">
+                    <input type="text" name="title" id="title" placeholder="title ... " maxlength="255">
                     <select name="category[]" class="ui selection dropdown" multiple="" id="multi-select">
                         <option value="">Categories</option>
                         <option value="informatique">Informatique</option>

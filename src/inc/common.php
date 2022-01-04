@@ -36,7 +36,7 @@
         Admin
     </a>
     <a class="item" href="./Method/logout.php">
-    <i class="fa-solid fa-arrow-right-from-bracket icon"></i>
+    <i class="sign out alternate icon"></i>
         Disconnect
     </a>
 </div>

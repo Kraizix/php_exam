@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Users(
     pass VARCHAR(255) NOT NULL,
     admin BOOLEAN NOT NULL default 0
 );
-INSERT INTO Users (id, username, email, image, description, joinDate, pass, admin) 
+INSERT INTO Users (id, username, mail, image, description, joinDate, pass, admin) 
     VALUES (0, 'Admin', 'admin@gmail.com', "./content/default/admin.png", "I'm the master of this world","1970-01-01",'$2y$12$RaC3ZOdXCv.M5mOOmqZ4dORfvOSTyEOwSqs.5hfqQkRC9e9Ldq6ZC',1)
 CREATE TABLE IF NOT EXISTS Articles(
     id INTEGER PRIMARY KEY  AUTO_INCREMENT NOT NULL,

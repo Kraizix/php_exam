@@ -81,7 +81,7 @@ $post=$query->fetch();
     
                 <form method="POST">
                 <?php
-                if ($_SESSION['id']==$post['userID']){
+                if ($_SESSION['id']==$post['userID'] || $_SESSION['admin']){
                 ?>
                         <div class="ui card centered" style="transform:scale(1.5); margin-top:10%;">
                             <div class="content">
